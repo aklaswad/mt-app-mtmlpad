@@ -36,9 +36,13 @@ sub init_request {
     if ( $mode =~ /[^\w\.\-]/ ) {
         die "Bad request";
     }
+    if ( $mode eq 'new' ) {
+        $mode = 'view';
+        $id   = undef;
+    }
 
-    $app->param( __mode => $mode ) if $mode;
-    $app->param( id     => $id ) if $id;
+    $app->param( __mode => $mode );
+    $app->param( id     => $id );
     $app->{default_mode} = 'top';
 }
 
