@@ -6,5 +6,7 @@ Database mt
 DBUser root
 DBHost localhost
 SingleCommunity 1
+
 MTMLPadURL http://localhost:5001/
+MTMLPadBlogID 2
 MTMLPreviewURL http://localhost:5000/

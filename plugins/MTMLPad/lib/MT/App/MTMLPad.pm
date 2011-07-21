@@ -2,6 +2,7 @@ package MT::App::MTMLPad;
 use strict;
 use warnings;
 use MT::App;
+use MT::Entry;
 use base qw( MT::App::Comments );
 
 sub init {
@@ -21,7 +22,7 @@ sub init_request {
     delete $app->{__path_info};
     $app->SUPER::init_request(@_);
 
-    $app->param(blog_id => 2);
+    $app->param(blog_id => MT->config->MTMLPadBlogID);
     $app->param(static => '/') unless $app->param('static');
     $app->config( CommentScript => '' );
 
@@ -63,7 +64,7 @@ sub top {
     my $param = $app->prepare_standard_params;
     $param->{script_url} = '/';
     my @entry_objs = MT->model('entry')->load({
-            blog_id => 2,  #FIXME: hardcoded
+            blog_id => MT->config->MTMLPadBlogID,
         }, {
             direction  => 'descend',
             limit      => 10,
@@ -132,8 +133,8 @@ sub save {
         $entry = MT->model('entry')->new;
         $entry->author_id( $param->{user_id} );
     }
-    $entry->blog_id(2); ## FIXME: hardcoded
-    $entry->status(1);
+    $entry->blog_id(MT->config->MTMLPadBlogID);
+    $entry->status( MT::Entry::RELEASE() );
     $entry->title( $app->param('title') );
     $entry->text( $app->param('text') );
     $entry->save;
@@ -159,7 +160,7 @@ sub view_author {
 
     my @entry_objs = MT->model('entry')->load({
             author_id => $id,
-            blog_id   => 2,  #FIXME: hardcoded
+            blog_id   => MT->config->MTMLPadBlogID,
         }, {
             direction  => 'descend',
             limit      => 10,

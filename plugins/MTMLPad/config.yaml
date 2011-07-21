@@ -4,4 +4,5 @@ config_settings:
         default: ~
     MTMLPreviewURL:
         default:  ~
-
+    MTMLPadBlogID:
+        default: ~
