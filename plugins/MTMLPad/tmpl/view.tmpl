@@ -77,18 +77,18 @@ $('#save').click( function () {
 </mt:if>
         <input type="hidden" name="text" id="text" />
         <p>
-<mt:if name="mine">
+<mt:if name="new_object">
+          <label for="title">Title: </label><input name="title" />
+<mt:elseif name="mine">
           <input
             name="title"
             <mt:if name="title">value="<mt:var name="title">"</mt:if>
             <mt:unless name="editable">disabled="disabled"</mt:unless>
           /> by You
-<mt:else>
-    <mt:if name="author_id">
+<mt:elseif name="author_id">
           <h1><mt:var name="title"> by <a href="/author/<mt:var name="author_id">"><mt:var name="author_name"></a></h1>
-    <mt:else>
+<mt:else>
           <h1><mt:var name="title"> by (deleted user)</h1>
-    </mt:if>
 </mt:if>
         </p>
         <textarea
