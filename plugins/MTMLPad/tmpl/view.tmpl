@@ -30,7 +30,13 @@ var editor = CodeMirror.fromTextArea(textarea, codeMirrorOptions );
 
 // Auto Preview
 var last_text = '';
+var requesting = false;
 var do_preview = function (text) {
+    if ( requesting ) {
+        return;
+    }
+    requesting = true;
+
     $.ajax( '<mt:var name="config.MTMLPreviewURL">', {
         type: 'POST',
         data: {
@@ -39,9 +45,11 @@ var do_preview = function (text) {
         success: function ( data, textStatus, jqXHR ) {
             $('#preview-state').text('OK');
             $('#preview').text(data);
+            requesting = false;
         },
         error: function ( jqXHR, textStatus, errorThrown ) {
             $('#preview-state').text( jqXHR.responseText || 'Unknown error.' );
+            requesting = false;
         }
     });
 }
