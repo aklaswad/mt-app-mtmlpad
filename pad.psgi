@@ -48,9 +48,9 @@ my $app = sub {
     my $blog     = MT->model('blog')->load(1);
     $ctx->stash( blog => $blog );
     my $tokens   = $build->compile( $ctx, $template )
-        or return build_error( $build->errstr );
+        or return build_error( 'Compile error: ' . $build->errstr );
     my $out      = $build->build( $ctx, $tokens )
-        or return build_error( $build->errstr );
+        or return build_error( 'Build error: ' . $build->errstr );
 
     my $res      = Plack::Response->new();
     $res->status(200);
