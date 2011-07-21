@@ -48,10 +48,16 @@ my $app = sub {
     my $ctx      = MT::Template::Context->new;
     my $blog     = MT->model('blog')->load(1);
     $ctx->stash( blog => $blog );
-    my $tokens   = $build->compile( $ctx, $template )
-        or return build_error( 'Compile error: ' . $build->errstr );
-    my $out      = $build->build( $ctx, $tokens )
-        or return build_error( 'Build error: ' . $build->errstr );
+
+    my ( $tokens, $out );
+
+    $tokens = eval { $build->compile( $ctx, $template ) };
+    return build_error( 'Internal error at compile: ' . $@ ) if $@;
+    return build_error( 'Compile error: ' . $build->errstr ) unless defined $tokens;
+
+    $out = eval { $build->build( $ctx, $tokens ) };
+    return build_error( 'Internal error at build: ' . $@ ) if $@;
+    return build_error( 'Build error: ' . $build->errstr ) unless defined $out;
 
     my $res      = Plack::Response->new();
     $res->status(200);

@@ -41,7 +41,7 @@ var do_preview = function (text) {
             $('#preview').text(data);
         },
         error: function ( jqXHR, textStatus, errorThrown ) {
-            $('#preview-state').text('Error: ' + jqXHR.responseText);
+            $('#preview-state').text( jqXHR.responseText || 'Unknown error.' );
         }
     });
 }
