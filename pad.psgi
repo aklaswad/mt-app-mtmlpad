@@ -1,4 +1,3 @@
-### Movable Type content viewer
 use strict;
 use warnings;
 use Plack::Request;
@@ -9,10 +8,25 @@ use Encode;
 use MT;
 use MT::Builder;
 use MT::Template::Context;
-use MT::FileMgr::Local;
-use MT::WeblogPublisher;
+use MT::Template::Handler;
 
 my $mt = MT->new;
+
+## Kill some tags for security.
+{
+    my $orig_invoke = \&MT::Template::Handler::invoke;
+    my %danger_tag = map { $_ => 1 } qw(
+        include
+        includeblock
+    );
+    no warnings 'redefine';
+    *MT::Template::Handler::invoke = sub {
+        my $tag = $_[1]->stash('tag');
+        return "<< Sorry, tag [$tag] is not available. >>"
+            if $danger_tag{lc $tag};
+        $orig_invoke->(@_);
+    };
+}
 
 sub build_error {
     my ($error) = @_;
