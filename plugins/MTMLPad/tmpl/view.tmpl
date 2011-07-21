@@ -95,9 +95,9 @@ $('#save').click( function () {
             name="editor"
             id="editor"
             <mt:unless name="editable">readonly="readonly"</mt:unless>
-        ><mt:if name="text"><mt:var name="text"></mt:if></textarea>
+        ><mt:if name="text"><mt:var name="text" encode_html="1"></mt:if></textarea>
 <mt:if name="editable">
-        <button id="save"><mt:if name="id">Update<mt:else>Save</mt:if></button></mt:if>
+        <button id="save"><mt:if name="id">Update<mt:else>Save</mt:if></button>
 </mt:if>
       </form>
     </div>
