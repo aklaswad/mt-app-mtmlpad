@@ -1,8 +1,11 @@
 #!/usr/bin/perl -w
 use strict;
 use lib qw( lib extlib );
+BEGIN { $ENV{MT_CONFIG} = 'mtml-pad-config.cgi' }
 use MT;
-BEGIN { MT->new }
+BEGIN {
+    MT->new;
+}
 use MT::App::MTMLPad;
 use CGI::PSGI;
 use Plack::Builder;

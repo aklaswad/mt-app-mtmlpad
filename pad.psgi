@@ -10,6 +10,7 @@ use MT::Builder;
 use MT::Template::Context;
 use MT::Template::Handler;
 
+$ENV{MT_CONFIG} = 'mtml-preview-config.cgi';
 my $mt = MT->new;
 
 ## Kill some tags for security.
