@@ -1,0 +1,111 @@
+<mt:setVarBlock name="page_script" append="1">
+$( function () {
+
+// Syntax Highlight
+var modeLoop = [ 'text', 'mtml', 'mtmloverlay' ];
+var currentMode = 1;
+var mtml_mode = true;
+var codeMirrorOptions = {
+<mt:unless name="editable">
+  readOnly: true,
+</mt:unless>
+  mode: 'mtml',
+  lineNumbers: true,
+  indentUnit: 0,
+  electricChars: false,
+  enterMode: 'flat',
+  tabMode: 'classic',
+  undoDepth: 2000,
+  onCursorActivity: function (editor, changed) {
+    var cursor = editor.getCursor();
+    jQuery('#editor-state').text(
+      'line: ' + cursor.line + ' : ' + cursor.ch
+    );
+  }
+};
+
+var textarea = $('#editor').get(0);
+var editor = CodeMirror.fromTextArea(textarea, codeMirrorOptions );
+
+
+// Auto Preview
+var last_text = '';
+var do_preview = function (text) {
+    $.ajax( 'http://localhost:5000', {
+        type: 'POST',
+        data: {
+            template: text
+        },
+        success: function ( data, textStatus, jqXHR ) {
+            $('#preview-state').text('OK');
+            $('#preview').text(data);
+        },
+        error: function ( jqXHR, textStatus, errorThrown ) {
+            $('#preview-state').text('Error: ' + jqXHR.responseText);
+        }
+    });
+}
+
+var preview = function () {
+    var text = editor.getValue();
+    if ( last_text !== text ) {
+        last_text = text;
+        do_preview(text);
+    }
+}
+
+var timer = setInterval( preview, 500);
+
+
+// Actions
+$('#save').click( function () {
+    $('#text').val( editor.getValue() );
+});
+
+});
+
+</mt:setVarBlock>
+
+<mt:include name="header.tmpl" component="MTMLPad">
+
+  <div id="content">
+    <div id="editor-area">
+      <form action="/" method="POST">
+        <input type="hidden" name="__mode" value="save" />
+<mt:if name="id">
+        <input type="hidden" name="id" value="<mt:var name="id">" />
+</mt:if>
+        <input type="hidden" name="text" id="text" />
+        <p>
+<mt:if name="mine">
+          <input
+            name="title"
+            <mt:if name="title">value="<mt:var name="title">"</mt:if>
+            <mt:unless name="editable">disabled="disabled"</mt:unless>
+          /> by You
+<mt:else>
+    <mt:if name="author_id">
+          <h1><mt:var name="title"> by <a href="/author/<mt:var name="author_id">"><mt:var name="author_name"></a></h1>
+    <mt:else>
+          <h1><mt:var name="title"> by (deleted user)</h1>
+    </mt:if>
+</mt:if>
+        </p>
+        <textarea
+            name="editor"
+            id="editor"
+            <mt:unless name="editable">readonly="readonly"</mt:unless>
+        ><mt:if name="text"><mt:var name="text"></mt:if></textarea>
+<mt:if name="editable">
+        <button id="save">Save</button></mt:if>
+</mt:if>
+      </form>
+    </div>
+    <div id="preview-area">
+      <span id="preview-state"></span>
+      <pre id="preview"></pre>
+    </div>
+  </div>
+
+
+<mt:include name="footer.tmpl" component="MTMLPad">

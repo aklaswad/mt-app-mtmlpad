@@ -1,0 +1,12 @@
+<mt:include name="header.tmpl" component="MTMLPad">
+
+<ul>
+<mt:loop name="entries">
+<li>
+    <a href="/view/<mt:var name="id">"><mt:var name="title"></a> by <a href="/author/<mt:var name="author_id">"><mt:var name="author_name"></a>
+</li>
+</mt:loop>
+</ul>
+
+<mt:include name="footer.tmpl" component="MTMLPad">
+

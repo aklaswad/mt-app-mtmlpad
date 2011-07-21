@@ -1,0 +1,12 @@
+<mt:include name="header.tmpl" component="MTMLPad">
+
+<h1>Templates by <mt:var name="name"></h1>
+
+<mt:loop name="entries">
+<li>
+    <a href="/view/<mt:var name="id">"><mt:var name="title"></a>
+</li>
+</mt:loop>
+</ul>
+
+<mt:include name="footer.tmpl" component="MTMLPad">

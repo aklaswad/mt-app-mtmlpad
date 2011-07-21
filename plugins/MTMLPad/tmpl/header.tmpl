@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>MTML Pad</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript" src="/mt-static/plugins/MTMLPad/CodeMirror2/lib/codemirror.js"></script>
+<script type="text/javascript" src="/mt-static/plugins/MTMLPad/js/codemirror/mtml-mode.js"></script>
+
+<script type="text/javascript">
+<mt:var name="page_script">
+</script>
+
+<link rel="stylesheet" href="/mt-static/plugins/MTMLPad/CodeMirror2/lib/codemirror.css" />
+<link rel="stylesheet" href="/mt-static/plugins/MTMLPad/css/styles.css" />
+
+</head>
+<body>
+  <div id="header">
+    <a id="logo" href="/">MTML Pad</a>
+<mt:if name="user">
+    <a id="new" href="/new">Create new template</a>
+</mt:if>
+    <span id="user">
+      <mt:if name="user">
+        <mt:var name="user_name"> | <a href="/?__mode=handle_sign_in&amp;logout=1">logout</a>
+      <mt:else>
+        <form action="/" method="POST">
+          <input type="hidden" name="__mode" value="login_external" />
+          <input type="hidden" name="key" value="OpenID" />
+          <input name="openid_url" type="text" />
+          <input type="submit" />
+        </form>
+      </mt:if>
+    </span>
+  </div>
