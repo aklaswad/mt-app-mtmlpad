@@ -56,7 +56,7 @@ my $app = sub {
     my $res      = Plack::Response->new();
     $res->status(200);
     $res->header( 'Content-Type' => 'text/plain' );
-    $res->header( 'Access-Control-Allow-Origin' => 'http://localhost:5001' );
+    $res->header( 'Access-Control-Allow-Origin' => MT->config->MTMLPadURL );
     $res->content( Encode::encode_utf8($out) );
     return $res->finalize;
 };

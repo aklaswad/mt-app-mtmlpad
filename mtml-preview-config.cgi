@@ -6,4 +6,4 @@ Database mt_test
 DBUser root
 DBHost localhost
 SingleCommunity 1
-
+MTMLPadURL http://localhost:5001/

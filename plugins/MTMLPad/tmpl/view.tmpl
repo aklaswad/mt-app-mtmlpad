@@ -31,7 +31,7 @@ var editor = CodeMirror.fromTextArea(textarea, codeMirrorOptions );
 // Auto Preview
 var last_text = '';
 var do_preview = function (text) {
-    $.ajax( 'http://localhost:5000', {
+    $.ajax( '<mt:var name="config.MTMLPreviewURL">', {
         type: 'POST',
         data: {
             template: text
@@ -70,7 +70,7 @@ $('#save').click( function () {
 
   <div id="content">
     <div id="editor-area">
-      <form action="/" method="POST">
+      <form action="<mt:var name="config.MTMLPadURL">" method="POST">
         <input type="hidden" name="__mode" value="save" />
 <mt:if name="id">
         <input type="hidden" name="id" value="<mt:var name="id">" />
@@ -86,7 +86,7 @@ $('#save').click( function () {
             <mt:unless name="editable">disabled="disabled"</mt:unless>
           /> by You
 <mt:elseif name="author_id">
-          <h1><mt:var name="title"> by <a href="/author/<mt:var name="author_id">"><mt:var name="author_name"></a></h1>
+          <h1><mt:var name="title"> by <a href="<mt:var name="config.MTMLPadURL">author/<mt:var name="author_id">"><mt:var name="author_name"></a></h1>
 <mt:else>
           <h1><mt:var name="title"> by (deleted user)</h1>
 </mt:if>

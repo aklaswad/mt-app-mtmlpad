@@ -1,29 +1,7 @@
 name: MTML Pad
-applications:
-    mtmlpad:
-        handler: MT::App::Community
-        methods:
-            signin:
-            post:
-            view:
-            vote:
-            build:
-            
-themes:
-    mtml_pad:
-        id: mtml_pad
-        label: MTML Pad
-        elements:
-            template_set:
-                component: core
-                importer: template_set
-                require: 1
-                data:
-                    base_path: templates
-                    templates:
-                        index:
-                            main_index:
-                                label: Main Index
-                                outfile: index.html
-
+config_settings:
+    MTMLPadURL:
+        default: ~
+    MTMLPreviewURL:
+        default:  ~
 

@@ -15,8 +15,8 @@ use Plack::App::File;
 my $mt_app = sub {
     my $env = shift;
     my $cgi = CGI::PSGI->new($env);
-    local *ENV = $env; # some MT::App method needs this
-    my $app = MT::App::MTMLPad->new( CGIObject => $cgi );
+    local *ENV = { %ENV, %$env }; # some MT::App method needs this
+    my $app = MT::App::MTMLPad->new( CGIObject => $cgi,  );
     MT->set_instance($app);
 
     # Cheap hack to get the output
