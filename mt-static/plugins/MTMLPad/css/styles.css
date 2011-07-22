@@ -58,3 +58,42 @@ body {
     border: 1px solid #abc;
 }
 
+#sign-in-fields {
+    background-color: #bbb;
+}
+
+#sign-in-fields .hint,
+#sign-in-fields .auth-option-info,
+#sign-in-fields .field-header,
+#signin_with_openid img
+{
+    display: none;
+}
+
+#sign-in-fields .field-wrapper {
+    position: relative;
+    width: 300px;
+    height: 50px;
+}
+
+#sign-in-fields .field {
+    width: 150px;
+    height: 30px;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+#sign-in-fields .has-auth-icon input {
+    width: 200px;
+    padding-left: 22px;
+    background-repeat: no-repeat;
+    background-position: 3px center;
+}
+
+div.actions-bar-login {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+

@@ -5,12 +5,12 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript" src="<mt:var name="static_uri">plugins/MTMLPad/CodeMirror2/lib/codemirror.js"></script>
 <script type="text/javascript" src="<mt:var name="static_uri">plugins/MTMLPad/js/codemirror/mtml-mode.js"></script>
-
+<script type="text/javascript" src="<mt:var name="static_uri">plugins/MTMLPad/js/common.js"></script>
 <script type="text/javascript">
 <mt:var name="page_script">
 </script>
-
 <link rel="stylesheet" href="<mt:var name="static_uri">plugins/MTMLPad/CodeMirror2/lib/codemirror.css" />
+
 <link rel="stylesheet" href="<mt:var name="static_uri">plugins/MTMLPad/css/styles.css" />
 
 </head>
@@ -20,16 +20,12 @@
 <mt:if name="user">
     <a id="new" href="<mt:var name="config.MTMLPadURL">new/">Create new template</a>
 </mt:if>
-    <span id="user">
+    <div id="user">
       <mt:if name="user">
         <mt:var name="user_name"> | <a href="<mt:var name="config.MTMLPadURL">?__mode=handle_sign_in&amp;logout=1">logout</a>
       <mt:else>
-        <form action="<mt:var name="config.MTMLPadURL">" method="POST">
-          <input type="hidden" name="__mode" value="login_external" />
-          <input type="hidden" name="key" value="OpenID" />
-          <input name="openid_url" type="text" />
-          <input type="submit" />
-        </form>
+        <a href="#" id="open-login-panel">Login</a>
+        <mt:include name="login.tmpl" component="MTMLPad">
       </mt:if>
-    </span>
+    </div>
   </div>

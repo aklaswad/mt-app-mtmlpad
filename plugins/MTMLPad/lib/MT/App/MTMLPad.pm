@@ -51,12 +51,34 @@ sub prepare_standard_params {
     my $app = shift;
     my %param;
     my ( $sess_obj, $commenter ) = $app->_get_commenter_session();
+    my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID )
+        or die "Internal Error: Blog for MTMLPad not found.";
+    $param{blog} = $blog;
+    $param{script_url} = '/';
     if ( $commenter ) {
         $param{user}      = $commenter;
-        $param{user_name} = $commenter->name;
+        $param{user_name} = $commenter->nickname;
+        $param{user_link} = $commenter->url;
         $param{user_id}   = $commenter->id;
     }
+    else {
+        my $external_authenticators
+            = $app->external_authenticators( $blog, \%param );
+        if (@$external_authenticators) {
+            $param{auth_loop}      = $external_authenticators;
+            $param{default_signin} = $external_authenticators->[0]->{key}
+                unless exists $param{default_signin};
+        }
+    }
     return \%param;
+}
+
+sub set_default_tmpl_params {
+    my $app = shift;
+    my $tmpl = shift;
+    $app->SUPER::set_default_tmpl_params($tmpl);
+    $tmpl->param( script_url => '/' );
+    $tmpl;
 }
 
 sub top {
@@ -84,7 +106,10 @@ sub top {
     }
     $param->{entries} = \@entries;
     my $plugin = MT->component('MTMLPad');
-    return $plugin->load_tmpl('top.tmpl', $param);
+    my $tmpl = $plugin->load_tmpl('top.tmpl', $param);
+    my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
+    $tmpl->context->stash( blog => $blog );
+    return $tmpl;
 }
 
 sub view {
@@ -115,7 +140,10 @@ sub view {
     }
 
     my $plugin = MT->component('MTMLPad');
-    return $plugin->load_tmpl('view.tmpl', $param );
+    my $tmpl =  $plugin->load_tmpl('view.tmpl', $param );
+    my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
+    $tmpl->context->stash( blog => $blog );
+    return $tmpl;
 }
 
 sub save {
@@ -175,7 +203,10 @@ sub view_author {
 
     $param->{entries} = \@entries;
     my $plugin = MT->component('MTMLPad');
-    return $plugin->load_tmpl('view_author.tmpl', $param );
+    my $tmpl = $plugin->load_tmpl('view_author.tmpl', $param );
+    my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
+    $tmpl->context->stash( blog => $blog );
+    return $tmpl;
 }
 
 sub AUTOLOAD {
