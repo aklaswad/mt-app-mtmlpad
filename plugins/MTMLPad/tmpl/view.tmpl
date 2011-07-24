@@ -99,7 +99,10 @@ $('#save').click( function () {
       <input type="hidden" name="text" id="text" />
 
       <div class="entry-summary-header">
-        <mt:var name="entry_title_html"><span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
+        <mt:var name="entry_title_html">
+<mt:if name="entry_id">
+        <span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
+</mt:if>
       </div>
       <div id="editor-area">
         <textarea

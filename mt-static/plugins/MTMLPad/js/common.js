@@ -1,12 +1,22 @@
 $(function () {
-
     $('#open-login-panel').click( function () {
-        var $panel = $('#sign-in-fields');
-        var disp   = $panel.css('display');
-        console.log(disp);
-        $panel.css( 'display', disp === 'block' ? 'none' : 'block' );
+        $('#signin-panel').show();
+        $(window).bind( 'click.close_login', function () {
+            $(window).unbind( 'click.close_login' );
+            $('#signin-panel').hide();
+        });
         return false;
     });
+});
 
+$(function () {
+    $('#open-usermenu-panel').click( function () {
+        $('#usermenu-panel').show();
+        $(window).bind( 'click.close_usermenu', function () {
+            $(window).unbind( 'click.close_usermenu' );
+            $('#usermenu-panel').hide();
+        });
+        return false;
+    });
 });
 

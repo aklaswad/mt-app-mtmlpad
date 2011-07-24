@@ -23,12 +23,16 @@
     <div id="user-box">
       <mt:if name="user">
             <img src="<mt:var name="user_userpic">" />
-            <a href="<mt:var name="config.MTMLPadURL">author/<mt:var name="user_id">"><mt:var name="user_name"></a>
 
-             <a href="<mt:var name="config.MTMLPadURL">?__mode=handle_sign_in&amp;logout=1">logout</a>
-
+            <a href="#" id="open-usermenu-panel"><mt:var name="user_name"></a>
+            <div id="usermenu-panel" style="display: none;">
+              <ul>
+                <li><a href="<mt:var name="config.MTMLPadURL">author/<mt:var name="user_id">">My Profile</a></li>
+                <li><a href="<mt:var name="config.MTMLPadURL">?__mode=handle_sign_in&amp;logout=1">Sign out</a></li>
+              </ul>
+            </div>
       <mt:else>
-        <a href="#" id="open-login-panel">Login</a>
+        <a href="#" id="open-login-panel">Sign in</a>
         <mt:include name="login.tmpl" component="MTMLPad">
       </mt:if>
     </div>
