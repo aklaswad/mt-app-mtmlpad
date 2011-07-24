@@ -3,7 +3,7 @@
 <ul>
 <mt:loop name="entries">
 <li>
-    <a href="<mt:var name="config.MTMLPadURL"><mt:var name="id">"><mt:var name="title"></a> by <a href="/author/<mt:var name="author_id">"><mt:var name="author_name"></a>
+    <a href="<mt:var name="config.MTMLPadURL"><mt:var name="id">"><mt:var name="title"></a> by <mt:include name="author_info.tmpl" component="MTMLPad">
 </li>
 </mt:loop>
 </ul>

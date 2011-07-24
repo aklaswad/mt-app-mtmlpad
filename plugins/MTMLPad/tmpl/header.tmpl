@@ -22,7 +22,11 @@
 </mt:if>
     <div id="user">
       <mt:if name="user">
-        <mt:var name="user_name"> | <a href="<mt:var name="config.MTMLPadURL">?__mode=handle_sign_in&amp;logout=1">logout</a>
+            <img src="<mt:var name="user_userpic">" />
+            <mt:var name="user_name">
+            | <mt:var name="user_posts">
+            | <a href="<mt:var name="config.MTMLPadURL">?__mode=handle_sign_in&amp;logout=1">logout</a>
+
       <mt:else>
         <a href="#" id="open-login-panel">Login</a>
         <mt:include name="login.tmpl" component="MTMLPad">

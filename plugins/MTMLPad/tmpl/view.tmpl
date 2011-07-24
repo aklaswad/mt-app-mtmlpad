@@ -94,7 +94,7 @@ $('#save').click( function () {
             <mt:unless name="editable">disabled="disabled"</mt:unless>
           /> by You
 <mt:elseif name="author_id">
-          <h1><mt:var name="title"> by <a href="<mt:var name="config.MTMLPadURL">author/<mt:var name="author_id">"><mt:var name="author_name"></a></h1>
+          <h1><mt:var name="title"></h1> by <mt:include name="author_info.tmpl" component="MTMLPad">
 <mt:else>
           <h1><mt:var name="title"> by (deleted user)</h1>
 </mt:if>

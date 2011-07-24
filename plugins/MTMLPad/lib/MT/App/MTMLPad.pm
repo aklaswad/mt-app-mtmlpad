@@ -4,6 +4,7 @@ use warnings;
 use MT::App;
 use MT::Entry;
 use base qw( MT::App::Comments );
+use MT::CMS::OAuth;
 
 sub init {
     my $app = shift;
@@ -13,8 +14,27 @@ sub init {
         view => \&view,
         save => \&save,
         author => \&view_author,
+        login => \&login,
+        oauth_verified => \&oauth_verified,
     );
+    $app->{requires_login} = 0;
     $app;
+}
+
+sub script { return '/' }
+
+sub login {
+    my $app = shift;
+    my $client = $app->param('client');
+    my $endpoint = MT->config->MTMLPadURL . 'oauth_verified';
+    $endpoint .= '?client=' . $client if $client eq 'twitter';
+    MT::CMS::OAuth::oauth_login($app, our_endpoint => $endpoint, @_);
+}
+
+sub oauth_verified {
+    my $app = shift;
+    my $endpoint = MT->config->MTMLPadURL . 'oauth_verified';
+    MT::CMS::OAuth::oauth_verified($app, our_endpoint => $endpoint, @_);
 }
 
 sub init_request {
@@ -54,12 +74,21 @@ sub prepare_standard_params {
     my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID )
         or die "Internal Error: Blog for MTMLPad not found.";
     $param{blog} = $blog;
+
+    ## FIXME: MT::App returns empty value. maybe because of difference
+    ##        between CGI and CGI::PSGI. need to investigate...
     $param{script_url} = '/';
     if ( $commenter ) {
-        $param{user}      = $commenter;
-        $param{user_name} = $commenter->nickname;
-        $param{user_link} = $commenter->url;
-        $param{user_id}   = $commenter->id;
+        $param{user}         = $commenter;
+        $param{user_name}    = $commenter->nickname;
+        $param{user_link}    = $commenter->url;
+        $param{user_id}      = $commenter->id;
+        $param{user_auth}    = $commenter->auth_type;
+        $param{user_userpic} = $commenter->userpic_url( Width => 32, Height => 32, Square => 1 );
+        $param{user_posts}   = MT->model('entry')->count({
+            blog_id   => MT->config->MTMLPadBlogID,
+            author_id => $commenter->id,
+        });
     }
     else {
         my $external_authenticators
@@ -70,6 +99,7 @@ sub prepare_standard_params {
                 unless exists $param{default_signin};
         }
     }
+    $param{this_url} = MT->config->MTMLPadURL . $app->path_info;
     return \%param;
 }
 
@@ -77,6 +107,9 @@ sub set_default_tmpl_params {
     my $app = shift;
     my $tmpl = shift;
     $app->SUPER::set_default_tmpl_params($tmpl);
+
+    ## FIXME: MT::App returns empty value. maybe because of difference
+    ##        between CGI and CGI::PSGI. need to investigate...
     $tmpl->param( script_url => '/' );
     $tmpl;
 }
@@ -97,12 +130,14 @@ sub top {
     my @entries;
     for my $entry ( @entry_objs ) {
         my $author = $author_objs{ $entry->author_id };
-        push @entries, {
+        my $data = {
             id          => $entry->id,
             title       => $entry->title,
-            author_id   => $author->id,
-            author_name => $author->name,
         };
+        if ( $author ) {
+            $app->set_author_param($author, $data);
+        }
+        push @entries, $data;
     }
     $param->{entries} = \@entries;
     my $plugin = MT->component('MTMLPad');
@@ -110,6 +145,31 @@ sub top {
     my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
     $tmpl->context->stash( blog => $blog );
     return $tmpl;
+}
+
+sub set_author_param {
+    my $app = shift;
+    my ( $author, $param ) = @_;
+    $param = {} unless defined $param;
+    $param->{author_id}       = $author->id;
+    $param->{author_name}     = $author->nickname;
+    $param->{author_userpic}  = $author->userpic_url( Width => 48, Height => 48, Square => 1 );
+    $param->{author_userpic_small}  = $author->userpic_url( Width => 28, Height => 28, Square => 1 );
+    $param->{author_post_count} = MT->model('entry')->count({
+        blog_id   => MT->config->MTMLPadBlogID,
+        author_id => $author->id,
+    });
+    $param->{author_auth_type} = $author->auth_type;
+    $param->{author_auth_type} =~ s/^oauth\.//;
+    $param->{author_external_profile_url} = $author->url;
+
+    my $login_user = $app->user;
+    $param->{author_is_me} = !$login_user                   ? 0
+                           : $author->id == $login_user->id ? 1
+                           :                                  0
+                           ;
+    $param->{author_editable} = $param->{author_is_me};
+    $param;
 }
 
 sub view {
@@ -131,8 +191,7 @@ sub view {
                        ;
         $param->{editable} = $param->{mine};
         my $author = MT->model('author')->load($entry->author_id);
-        $param->{author_name} = $author ? $author->name : '(deleted author)';
-        $param->{author_id}   = $author ? $author->id   : 0;
+        $app->set_author_param($author, $param) if $author;
     }
     else {
         $param->{new_object} = 1;
@@ -178,13 +237,8 @@ sub view_author {
     return $app->error('Bad request') if $id =~ /\D/;
     my $author = MT->model('author')->load($id)
         or return $app->error('Bad request');
-    $param->{id}       = $id;
-    $param->{name}     = $author->name;
-    $param->{me} = !$param->{user}                  ? 0
-                 : $author->id == $param->{user_id} ? 1
-                 :                                    0
-                 ;
-    $param->{editable} = $param->{me};
+    $app->set_author_param($author, $param);
+
 
     my @entry_objs = MT->model('entry')->load({
             author_id => $id,
@@ -201,7 +255,7 @@ sub view_author {
         };
     }
 
-    $param->{entries} = \@entries;
+    $param->{author_entries} = \@entries;
     my $plugin = MT->component('MTMLPad');
     my $tmpl = $plugin->load_tmpl('view_author.tmpl', $param );
     my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );

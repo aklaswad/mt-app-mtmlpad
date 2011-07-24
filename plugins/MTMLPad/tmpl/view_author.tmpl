@@ -1,8 +1,10 @@
 <mt:include name="header.tmpl" component="MTMLPad">
 
-<h1>Templates by <mt:var name="name"></h1>
 
-<mt:loop name="entries">
+<img src="<mt:var name="author_userpic">"/> <mt:var name="author_name"> <mt:var name="author_post_count"> entries
+<mt:var name="author_auth_type">
+<mt:var name="author_external_profile_url">
+<mt:loop name="author_entries">
 <li>
     <a href="<mt:var name="config.MTMLPadURL"><mt:var name="id">"><mt:var name="title"></a>
 </li>
