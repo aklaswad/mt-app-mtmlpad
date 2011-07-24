@@ -1,0 +1,30 @@
+<div id="sign-in-fields" style="display: none;">
+
+<ul>
+    <li><a href="<mt:var name="script_url">login?client=twitter&redirect=<mt:var name="this_url" encode_url="1">"><img src="<mt:var name="static_uri">plugins/MTMLPad/images/twitter.png" width="16" height="16" /> login with twitter</a></li>
+
+    <li><a href="<mt:var name="script_url">login?client=facebook&redirect=<mt:var name="this_url" encode_url="1">"><img src="<mt:var name="static_uri">plugins/MTMLPad/images/facebook.png" width="16" height="16" /> login with facebook</a></li>
+
+    <li><a href="<mt:var name="script_url">login?client=google&redirect=<mt:var name="this_url" encode_url="1">">g</a></li>
+
+
+  <li id="signin_with_openid" class="field-wrapper">
+    <form method="post" action="/">
+      <input type="hidden" name="__mode" value="login_external" />
+      <input type="hidden" name="blog_id" value="2" />
+      <input type="hidden" name="entry_id" value="" />
+      <input type="hidden" name="static" value="/" />
+      <input type="hidden" name="key" value="OpenID" /> 
+      <input type="text" name="openid_url" class="text full" style="background-image: url(http://localhost:5001/mt-static/images/comment/openid_logo.png);" />
+      <button
+        type="submit"
+        accesskey="s"
+        title="Sign In (s)"
+        class="sign-in action primary button">
+        Sign in with OpenID
+      </button>
+    </form>
+  </li>
+
+</ul>
+</div>
