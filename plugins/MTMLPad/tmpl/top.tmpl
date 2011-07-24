@@ -33,22 +33,26 @@ $('textarea.snipet').each( function () {
 
 <div id="content">
 
-<div id="about">
-MTMLPad は、Movable Typeのテンプレートを貼付けて共有する事が出来るサイトです。
-</div>
-
-
-<div id="recent-posts" class="entry-list">
-<h1>Recent Posts</h1>
-<mt:loop name="entries">
-  <div class="entry-summary">
-    <div class="entry-summary-header">
-      <a href="<mt:var name="config.MTMLPadURL"><mt:var name="entry_id">"><mt:var name="entry_title"></a><span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
-    </div>
-    <textarea class="snipet"><mt:var name="entry_text_head"></textarea>
+  <div id="about">
+    MTMLPad は、Movable Typeのテンプレートを貼付けて共有する事が出来るサイトです。
   </div>
-</mt:loop>
-</div>
+
+  <div id="recent-posts" class="entry-list">
+    <h2>Recent Posts</h2>
+    <mt:loop name="entries">
+      <div class="entry-summary">
+        <div class="entry-summary-header">
+          <a href="<mt:var name="config.MTMLPadURL"><mt:var name="entry_id">"><mt:var name="entry_title"></a><span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
+        </div>
+        <textarea class="snipet"><mt:var name="entry_text_head"></textarea>
+      </div>
+    </mt:loop>
+  </div>
+
+  <div id="news">
+    <h2>News</h2>
+    Comming soon...
+  </div>
 
 </div>
 

@@ -1,15 +1,25 @@
 $(function () {
     $('#open-login-panel').click( function () {
-        $('#signin-panel').show();
-        $(window).bind( 'click.close_login', function () {
-            $(window).unbind( 'click.close_login' );
-            $('#signin-panel').hide();
-        });
+        var $panel = $('#signin-panel');
+        var disp   = $panel.css('display');
+        if ( disp === 'none' ) {
+          $('#signin-panel').show();
+          $(window).bind( 'click.close_login', function () {
+              $(window).unbind( 'click.close_login' );
+              $('#signin-panel').hide();
+          });
+          return false;
+        }
+        else {
+          $(window).unbind( 'click.close_login' );
+          $('#signin-panel').hide();
+        }
+    });
+
+    $('#openid_url').click( function () {
         return false;
     });
-});
 
-$(function () {
     $('#open-usermenu-panel').click( function () {
         $('#usermenu-panel').show();
         $(window).bind( 'click.close_usermenu', function () {

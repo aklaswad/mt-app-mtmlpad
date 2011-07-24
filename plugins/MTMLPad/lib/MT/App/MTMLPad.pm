@@ -87,7 +87,7 @@ sub prepare_standard_params {
         $param{user_link}    = $commenter->url;
         $param{user_id}      = $commenter->id;
         $param{user_auth}    = $commenter->auth_type;
-        $param{user_userpic} = $commenter->userpic_url( Width => 16, Height => 16, Square => 1 );
+        $param{user_userpic} = $commenter->userpic_url();# Width => 20, Height => 20, Square => 1 );
 
         $param{user_posts}   = MT->model('entry')->count({
             blog_id   => MT->config->MTMLPadBlogID,
@@ -147,9 +147,9 @@ sub set_author_params {
     $param = {} unless defined $param;
     $param->{author_id}       = $author->id;
     $param->{author_name}     = $author->nickname;
-    $param->{author_userpic}  = $author->userpic_url( Width => 48, Height => 48, Square => 1 );
-    $param->{author_userpic_medium}  = $author->userpic_url( Width => 24, Height => 14, Square => 1 );
-    $param->{author_userpic_small}  = $author->userpic_url( Width => 16, Height => 16, Square => 1 );
+    $param->{author_userpic}  = $author->userpic_url();
+    $param->{author_userpic_medium}  = $author->userpic_url( Width => 28, Height => 28, Square => 1 );
+    $param->{author_userpic_small}  = $author->userpic_url( Width => 20, Height => 20, Square => 1 );
     $param->{author_post_count} = MT->model('entry')->count({
         blog_id   => MT->config->MTMLPadBlogID,
         author_id => $author->id,
