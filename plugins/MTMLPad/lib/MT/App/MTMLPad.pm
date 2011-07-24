@@ -50,14 +50,14 @@ sub init_request {
     my @paths = split '/', $path;
     shift @paths unless $paths[0];
     my ( $mode, $id ) = @paths;
-    if ( $mode =~ /^\d+$/ ) {
+    if ( $mode && $mode =~ /^\d+$/ ) {
         $id   = $mode;
         $mode = 'view';
     }
-    if ( $mode =~ /[^\w\.\-]/ ) {
+    if ( $mode && $mode =~ /[^\w\.\-]/ ) {
         die "Bad request";
     }
-    if ( $mode eq 'new' ) {
+    if ( $mode && $mode eq 'new' ) {
         $mode = 'view';
         $id   = undef;
     }
@@ -65,6 +65,9 @@ sub init_request {
     $app->param( __mode => $mode );
     $app->param( id     => $id );
     $app->{default_mode} = 'top';
+
+    my ( $sess_obj, $commenter ) = $app->_get_commenter_session();
+    $app->user($commenter);
 }
 
 sub prepare_standard_params {
@@ -84,7 +87,8 @@ sub prepare_standard_params {
         $param{user_link}    = $commenter->url;
         $param{user_id}      = $commenter->id;
         $param{user_auth}    = $commenter->auth_type;
-        $param{user_userpic} = $commenter->userpic_url( Width => 32, Height => 32, Square => 1 );
+        $param{user_userpic} = $commenter->userpic_url( Width => 16, Height => 16, Square => 1 );
+
         $param{user_posts}   = MT->model('entry')->count({
             blog_id   => MT->config->MTMLPadBlogID,
             author_id => $commenter->id,
@@ -114,47 +118,38 @@ sub set_default_tmpl_params {
     $tmpl;
 }
 
-sub top {
+sub set_entry_params {
     my $app = shift;
-    my $param = $app->prepare_standard_params;
-    $param->{script_url} = '/';
-    my @entry_objs = MT->model('entry')->load({
-            blog_id => MT->config->MTMLPadBlogID,
-        }, {
-            direction  => 'descend',
-            limit      => 10,
-    });
-    my %author_ids = map { $_->author_id => 1 } @entry_objs;
-    my @author_objs = MT->model('author')->load({ id => [ keys %author_ids ] });
-    my %author_objs = map { $_->id => $_ } @author_objs;
-    my @entries;
-    for my $entry ( @entry_objs ) {
-        my $author = $author_objs{ $entry->author_id };
-        my $data = {
-            id          => $entry->id,
-            title       => $entry->title,
-        };
-        if ( $author ) {
-            $app->set_author_param($author, $data);
-        }
-        push @entries, $data;
+    my ( $entry, $param ) = @_;
+    $param = {} unless defined $param;
+    my @lines = split "\n", $entry->text;
+    my $text_head = join "\n", @lines[0..2];
+    chomp $text_head;
+    $param->{entry_id}        = $entry->id;
+    $param->{entry_title}     = $entry->title || "entry: " . $entry->id;
+    $param->{entry_text}      = $entry->text;
+    $param->{entry_text_head} = $text_head;
+
+    if ( my $author = $entry->author ) {
+        $app->set_author_params($author, $param);
     }
-    $param->{entries} = \@entries;
-    my $plugin = MT->component('MTMLPad');
-    my $tmpl = $plugin->load_tmpl('top.tmpl', $param);
-    my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
-    $tmpl->context->stash( blog => $blog );
-    return $tmpl;
+    my $login_user = $app->user;
+    if ( $login_user ) {
+        $param->{entry_is_mine} = $entry->author_id == $login_user->id ? 1 : 0;
+        $param->{entry_editable} = $param->{entry_is_mine};
+    }
+    $param;
 }
 
-sub set_author_param {
+sub set_author_params {
     my $app = shift;
     my ( $author, $param ) = @_;
     $param = {} unless defined $param;
     $param->{author_id}       = $author->id;
     $param->{author_name}     = $author->nickname;
     $param->{author_userpic}  = $author->userpic_url( Width => 48, Height => 48, Square => 1 );
-    $param->{author_userpic_small}  = $author->userpic_url( Width => 28, Height => 28, Square => 1 );
+    $param->{author_userpic_medium}  = $author->userpic_url( Width => 24, Height => 14, Square => 1 );
+    $param->{author_userpic_small}  = $author->userpic_url( Width => 16, Height => 16, Square => 1 );
     $param->{author_post_count} = MT->model('entry')->count({
         blog_id   => MT->config->MTMLPadBlogID,
         author_id => $author->id,
@@ -172,30 +167,40 @@ sub set_author_param {
     $param;
 }
 
+sub top {
+    my $app = shift;
+    my $param = $app->prepare_standard_params;
+    $param->{script_url} = '/';
+    my @entry_objs = MT->model('entry')->load({
+            blog_id => MT->config->MTMLPadBlogID,
+        }, {
+            direction  => 'descend',
+            limit      => 10,
+    });
+    my @entries;
+    for my $entry ( @entry_objs ) {
+        push @entries, $app->set_entry_params($entry);
+    }
+    $param->{entries} = \@entries;
+    my $plugin = MT->component('MTMLPad');
+    my $tmpl = $plugin->load_tmpl('top.tmpl', $param);
+    my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
+    $tmpl->context->stash( blog => $blog );
+    return $tmpl;
+}
+
 sub view {
     my $app = shift;
     my $param = $app->prepare_standard_params;
-
     if ( my $id = $app->param('id') ) {
         return $app->error('Bad request') if $id =~ /\D/;
         my $entry = MT->model('entry')->load($id)
             or return $app->error('Bad request');
-
-        $param->{id}       = $id;
-        $param->{title}    = $entry->title;
-        $param->{text}     = $entry->text;
-
-        $param->{mine} = !$param->{user}                        ? 0
-                       : $entry->author_id == $param->{user_id} ? 1
-                       :                                          0
-                       ;
-        $param->{editable} = $param->{mine};
-        my $author = MT->model('author')->load($entry->author_id);
-        $app->set_author_param($author, $param) if $author;
+        $app->set_entry_params($entry, $param);
     }
     else {
-        $param->{new_object} = 1;
-        $param->{editable}   = 1;
+        $param->{new_object}     = 1;
+        $param->{entry_editable} = 1;
     }
 
     my $plugin = MT->component('MTMLPad');
@@ -237,7 +242,7 @@ sub view_author {
     return $app->error('Bad request') if $id =~ /\D/;
     my $author = MT->model('author')->load($id)
         or return $app->error('Bad request');
-    $app->set_author_param($author, $param);
+    $app->set_author_params($author, $param);
 
 
     my @entry_objs = MT->model('entry')->load({
@@ -249,10 +254,7 @@ sub view_author {
     });
     my @entries;
     for my $entry ( @entry_objs ) {
-        push @entries, {
-            id          => $entry->id,
-            title       => $entry->title,
-        };
+        push @entries, $app->set_entry_params($entry);
     }
 
     $param->{author_entries} = \@entries;
