@@ -13,6 +13,7 @@ sub init {
         top  => \&top,
         view => \&view,
         save => \&save,
+        delete => \&delete_entry,
         author => \&view_author,
         login => \&login,
         oauth_verified => \&oauth_verified,
@@ -232,6 +233,21 @@ sub save {
     $entry->save;
     $app->param( id => $entry->id );
     return $app->redirect( '/view/' . $entry->id );
+}
+
+sub delete_entry {
+    my $app = shift;
+    my $param = $app->prepare_standard_params;
+    my $id = $app->param('id');
+    my $entry;
+    if ( $id ) {
+        $entry = MT->model('entry')->load($id)
+            or return $app->error('Bad request');
+        return $app->error('Bad request')
+            if $entry->author_id != $param->{user_id};
+    }
+    $entry->remove or return $app->error('Failed to delete entry');
+    return $app->redirect( '/' );
 }
 
 sub view_author {

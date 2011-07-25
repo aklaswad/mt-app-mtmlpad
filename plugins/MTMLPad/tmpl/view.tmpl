@@ -91,33 +91,37 @@ $('#save').click( function () {
 
 <mt:include name="header.tmpl" component="MTMLPad">
   <div id="content" class="editor-view-content">
-    <form action="<mt:var name="config.MTMLPadURL">" method="POST">
-      <input type="hidden" name="__mode" value="save" />
+    <div class="entry-summary-header">
+      <mt:var name="entry_title_html">
 <mt:if name="entry_id">
-      <input type="hidden" name="id" value="<mt:var name="entry_id">" />
+      <span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
 </mt:if>
-      <input type="hidden" name="text" id="text" />
-
-      <div class="entry-summary-header">
-        <mt:var name="entry_title_html">
-<mt:if name="entry_id">
-        <span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
-</mt:if>
-      </div>
-      <div id="editor-area">
-        <textarea
-            name="editor"
-            id="editor"
-            <mt:unless name="entry_editable">readonly="readonly"</mt:unless>
-        ><mt:if name="entry_text"><mt:var name="entry_text" encode_html="1"></mt:if></textarea>
-<mt:if name="entry_editable">
-        <button id="save"><mt:if name="entry_id">Update<mt:else>Save</mt:if></button>
-</mt:if>
-      </div>
-    </form>
+    </div>
+    <div id="editor-area">
+      <textarea
+          name="editor"
+          id="editor"
+          <mt:unless name="entry_editable">readonly="readonly"</mt:unless>
+      ><mt:if name="entry_text"><mt:var name="entry_text" encode_html="1"></mt:if></textarea>
+    </div>
     <div id="preview-area">
       <pre id="preview"></pre>
     </div>
+    <div id="actions">
+      <form action="<mt:var name="config.MTMLPadURL">" method="POST">
+        <input type="hidden" name="__mode" value="save" />
+  <mt:if name="entry_id">
+        <input type="hidden" name="id" value="<mt:var name="entry_id">" />
+  </mt:if>
+        <input type="hidden" name="text" id="text" />
+<mt:if name="entry_editable">
+        <button id="save"><mt:if name="entry_id">Update<mt:else>Save</mt:if></button>
+        <mt:if name="entry_id"><a class="button" id="delete" href="/delete/<mt:var name="entry_id">">Delete</a></mt:if>
+</mt:if>
+      </form>
+    </div>
+
+
   </div>
   <div id="preview-state" style="display: none"></div>
 

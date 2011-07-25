@@ -232,6 +232,12 @@ body {
     overflow: auto;
 }
 
+#actions {
+    clear: both;
+    width: 100%;
+    padding: 20px;
+}
+
 .icon-small {
     width: 22px;
     height: 22px;
