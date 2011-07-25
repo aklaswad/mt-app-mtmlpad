@@ -26,6 +26,7 @@ textarea#text, div.CodeMirror {
     width: 480px;
     border: 1px solid #ddd;
     background-color: #FFF;
+    overflow: auto;
 }
 
 .CodeMirror pre {
@@ -226,7 +227,9 @@ body {
 #preview {
     width: 500px;
     min-height: 300px;
-    border: 1px solid #abc;
+    padding: 5px 0;
+    line-height: 1em;
+    overflow: auto;
 }
 
 .icon-small {
