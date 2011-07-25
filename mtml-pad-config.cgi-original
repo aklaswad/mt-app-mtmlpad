@@ -1,12 +1,21 @@
-CGIPath        http://localhost:5001/
-StaticWebPath  /mt-static/
-StaticFilePath ./mt-static
-ObjectDriver DBI::mysql
-Database mt
-DBUser root
-DBHost localhost
-SingleCommunity 1
+## Alternative Movable Type configuration file for MTMLPad application server ##
+##                                                                            ##
+## This configuration file is similar to mt-config.cgi, but to be used to     ##
+## run MTMLPad's application server.                                          ##
+
+## MTMLPad Application Settings (Requied)
 
 MTMLPadURL http://localhost:5001/
 MTMLPadBlogID 2
 MTMLPreviewURL http://localhost:5000/
+
+## Database Settings
+## Recommended to use alternative database for preview.
+
+CGIPath        http://localhost:5000/
+StaticWebPath  /mt-static/
+StaticFilePath ./mt-static
+ObjectDriver DBI::mysql
+Database mtmlpad
+DBUser root
+DBHost localhost

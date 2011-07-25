@@ -1,9 +1,22 @@
+##  Alternative Movable Type configuration file for MTMLPad preview server  ##
+##                                                                          ##
+## This configuration file is similar to mt-config.cgi, but to be used to   ##
+## run MTMLPad's preview server.                                            ##
+
+## MTMLPad Application Settings (Requied)
+
+MTMLPadURL http://localhost:5001/
+MTMLPreviewURL http://localhost:5000/
+
+## Database Settings
+## Recommended to use alternative database for preview.
+
 CGIPath        http://localhost:5000/
 StaticWebPath  /mt-static/
 StaticFilePath ./mt-static
 ObjectDriver DBI::mysql
-Database mt_test
+Database mtmlpreview
 DBUser root
 DBHost localhost
-SingleCommunity 1
-MTMLPadURL http://localhost:5001/
+
+
