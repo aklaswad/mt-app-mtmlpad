@@ -20,9 +20,9 @@
     <div id="user-box">
       <mt:if name="user">
             <a id="create-new" class="button" href="<mt:var name="config.MTMLPadURL">new/"><span>Create New</span></a>
-            <img class="icon-small" src="<mt:var name="user_userpic">" />
+            <img class="icon-small" src="<mt:var name="user_userpic" escape="html">" />
 
-            <a href="#" id="open-usermenu-panel"><mt:var name="user_name"></a>
+            <a href="#" id="open-usermenu-panel"><mt:var name="user_name" escape="html"></a>
             <div id="usermenu-panel" class="dropdown" style="display: none;">
               <ul>
                 <li><a href="<mt:var name="config.MTMLPadURL">author/<mt:var name="user_id">">My Profile</a></li>

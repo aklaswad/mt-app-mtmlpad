@@ -33,21 +33,16 @@ $('textarea.snipet').each( function () {
 <div id="content" class="author-view-content">
   <div id="author-info">
     <div id="author-userpic">
-      <img class="userpic-large" src="<mt:var name="author_userpic">"/>
+      <img class="userpic-large" src="<mt:var name="author_userpic" escape="html">"/>
     </div>
-    <h1><mt:var name="author_name"><mt:if name="author_external_profile_url"><a href="<mt:var name="author_external_profile_url">"><img class="auth-icon icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/<mt:var name="author_auth_type">.png" /></a></mt:if></h1>
+    <h1><mt:var name="author_name" escape="html"><mt:if name="author_external_profile_url"><a href="<mt:var name="author_external_profile_url" escape="html">"><img class="auth-icon icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/<mt:var name="author_auth_type">.png" /></a></mt:if></h1>
     <ul class="author-description">
       <li>posted <mt:var name="author_post_count"> entries</li>
     </ul>
   </div>
 
 <mt:loop name="author_entries">
-  <div class="entry-summary">
-    <div class="entry-summary-header">
-      <a href="<mt:var name="config.MTMLPadURL"><mt:var name="entry_id">"><mt:var name="entry_title"></a><span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
-    </div>
-    <textarea class="snipet"><mt:var name="entry_text_head"></textarea>
-  </div>
+  <mt:include name="entry_summary.tmpl" component="MTMLPad">
 </mt:loop>
 
 </div>

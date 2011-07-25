@@ -81,11 +81,11 @@ $('#save').click( function () {
 <mt:elseif name="entry_is_mine">
           <input
             name="title"
-            <mt:if name="entry_title">value="<mt:var name="entry_title">"</mt:if>
+            <mt:if name="entry_title">value="<mt:var name="entry_title" escape="html">"</mt:if>
             <mt:unless name="entry_editable">disabled="disabled"</mt:unless>
           />
 <mt:else>
-          <h1><mt:var name="entry_title"></h1>
+          <h1><mt:var name="entry_title" escape="html"></h1>
 </mt:if>
 </mt:setVarBlock>
 

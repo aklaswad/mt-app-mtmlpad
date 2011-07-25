@@ -40,12 +40,7 @@ $('textarea.snipet').each( function () {
   <div id="recent-posts" class="entry-list">
     <h2>Recent Posts</h2>
     <mt:loop name="entries">
-      <div class="entry-summary">
-        <div class="entry-summary-header">
-          <a href="<mt:var name="config.MTMLPadURL"><mt:var name="entry_id">"><mt:var name="entry_title"></a><span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
-        </div>
-        <textarea class="snipet"><mt:var name="entry_text_head"></textarea>
-      </div>
+        <mt:include name="entry_summary.tmpl" component="MTMLPad" />
     </mt:loop>
   </div>
 
