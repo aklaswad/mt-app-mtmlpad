@@ -375,15 +375,14 @@ img.userpic-large {
 .asset {
     width: 100%;
     margin: 1.1em;
-    border: 1px solid #aaa;
     background-color: #fff;
-    border-radius: 5px;
 }
 
 .asset-header {
     padding: 2px 5px;
     border-bottom: 1px solid #abc;
     background-color: #eee;
+    border-radius: 5px;
 }
 
 .asset-body {
