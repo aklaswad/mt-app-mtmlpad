@@ -78,6 +78,11 @@ textarea#text, div.CodeMirror {
 #    text-decoration: underline;
 }
 
+#logo {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 .button {
     margin: 2px 4px;
     text-decoration: none;
@@ -365,6 +370,26 @@ img.userpic-large {
     /* width: 500px; */
 }
 
+/* Topics */
+
+.asset {
+    width: 100%;
+    margin: 1.1em;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.asset-header {
+    padding: 2px 5px;
+    border-bottom: 1px solid #abc;
+    background-color: #eee;
+}
+
+.asset-body {
+    padding: 5px;
+}
+
 /* Unused, but will use in future, maybe... */
 #overlay {
     position: fixed;
@@ -375,3 +400,4 @@ img.userpic-large {
     background-color: rgba(0,0,0,0.4);
     z-index: 50;
 }
+

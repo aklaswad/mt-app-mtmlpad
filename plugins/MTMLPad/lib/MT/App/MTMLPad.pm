@@ -22,6 +22,12 @@ sub init {
     $app;
 }
 
+sub load_tmpl {
+    my $app = shift;
+    my $plugin = MT->component('MTMLPad');
+    return $plugin->load_tmpl(@_) || $app->SUPER::load_tmpl(@_);
+}
+
 sub script { return '/' }
 
 sub login {
@@ -130,7 +136,7 @@ sub set_entry_params {
     $param->{entry_title}     = $entry->title || "entry: " . $entry->id;
     $param->{entry_text}      = $entry->text;
     $param->{entry_text_head} = $text_head;
-
+    $param->{entry_views}     = $entry->to_ping_urls; ## hack
     if ( my $author = $entry->author ) {
         $app->set_author_params($author, $param);
     }
@@ -197,6 +203,10 @@ sub view {
         return $app->error('Bad request') if $id =~ /\D/;
         my $entry = MT->model('entry')->load($id)
             or return $app->error('Bad request');
+        # use to_ping_urls column for page view.
+        my $views = $entry->to_ping_urls || 0;
+        $entry->to_ping_urls( $views + 1 );
+        $entry->save;
         $app->set_entry_params($entry, $param);
     }
     else {
@@ -259,7 +269,6 @@ sub view_author {
     my $author = MT->model('author')->load($id)
         or return $app->error('Bad request');
     $app->set_author_params($author, $param);
-
 
     my @entry_objs = MT->model('entry')->load({
             author_id => $id,

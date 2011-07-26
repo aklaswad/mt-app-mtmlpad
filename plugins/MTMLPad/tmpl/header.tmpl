@@ -15,12 +15,12 @@
 </head>
 <body>
   <div id="header">
-    <a id="logo" href="<mt:var name="config.MTMLPadURL">">MTML Pad</a>
+    <a id="logo" href="<mt:var name="config.MTMLPadURL">">MTMLPad</a>
 
     <div id="user-box">
       <mt:if name="user">
             <a id="create-new" class="button" href="<mt:var name="config.MTMLPadURL">new/"><span>Create New</span></a>
-            <img class="icon-small" src="<mt:var name="user_userpic" escape="html">" />
+            <mt:if name="user_userpic"><img class="icon-small" src="<mt:var name="user_userpic" escape="html">" /></mt:if>
 
             <a href="#" id="open-usermenu-panel"><mt:var name="user_name" escape="html"></a>
             <div id="usermenu-panel" class="dropdown" style="display: none;">

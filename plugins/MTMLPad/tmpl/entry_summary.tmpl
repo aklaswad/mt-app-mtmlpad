@@ -1,6 +1,7 @@
 <div class="entry-summary">
   <div class="entry-summary-header">
-    <a href="<mt:var name="config.MTMLPadURL"><mt:var name="entry_id">"><mt:var name="entry_title" escape="html"></a><span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
+    <a href="<mt:var name="config.MTMLPadURL"><mt:var name="entry_id">"><mt:var name="entry_title" escape="html"></a> <mt:if name="entry_views"><mt:var name="entry_views"> views</mt:if>
+    <span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
   </div>
   <textarea class="snipet"><mt:var name="entry_text_head" escape="html"></textarea>
 </div>
