@@ -1,5 +1,12 @@
 <a href="<mt:var name="config.MTMLPadURL">author/<mt:var name="author_id">">
     <mt:var name="author_name" escape="html">
+    <img class="userpic icon-small" src="<mt:var name="author_userpic" escape="html">" />
 </a>
-<img class="userpic icon-small" src="<mt:var name="author_userpic" escape="html">" />
-<mt:if name="author_external_profile_url"><a href="<mt:var name="author_external_profile_url" escape="html">"><img class="auth-icon icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/<mt:var name="author_auth_type">.png" /></a></mt:if>
+<mt:ignore>
+<mt:if name="author_external_profile_url">
+    <a href="<mt:var name="author_external_profile_url" escape="html">">
+
+      <img class="auth-icon icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/<mt:var name="author_auth_type">.png" />
+    </a>
+</mt:if>
+</mt:ignore>
