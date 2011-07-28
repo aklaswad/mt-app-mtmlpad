@@ -11,6 +11,10 @@
     <mt:loop name="entries">
         <mt:include name="entry_summary.tmpl" component="MTMLPad" />
     </mt:loop>
+
+    <mt:if name="has_prev">
+      <a href="<mt:var name="config.MTMLPadURL">?offset=<mt:var name="prev_offset">">Prev</a>
+    </mt:if>
     <mt:if name="has_next">
       <a href="<mt:var name="config.MTMLPadURL">?offset=<mt:var name="next_offset">">Next</a>
     </mt:if>

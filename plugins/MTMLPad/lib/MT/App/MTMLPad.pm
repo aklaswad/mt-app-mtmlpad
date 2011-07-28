@@ -207,7 +207,9 @@ sub top {
     }
     $param->{entries} = \@entries;
     $param->{has_next} = $has_next;
+    $param->{has_prev} = $offset > 0;
     $param->{next_offset} = $offset + $entries_per_page;
+    $param->{prev_offset} = $offset - $entries_per_page;
     my $plugin = MT->component('MTMLPad');
     my $tmpl = $plugin->load_tmpl('top.tmpl', $param);
     my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
@@ -320,8 +322,8 @@ sub view_author {
             author_id => $id,
             blog_id   => MT->config->MTMLPadBlogID,
         }, {
+            sort       => 'created_on',
             direction  => 'descend',
-            limit      => 10,
     });
     my @entries;
     for my $entry ( @entry_objs ) {
