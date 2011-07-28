@@ -129,13 +129,12 @@ sub set_entry_params {
     my $app = shift;
     my ( $entry, $param ) = @_;
     $param = {} unless defined $param;
-    my @lines = split "\n", $entry->text;
-    my $text_head = join "\n", @lines[0..2];
-    chomp $text_head;
+    my @lines = split "\n", ($entry->text_more || '');
     $param->{entry_id}        = $entry->id;
     $param->{entry_title}     = $entry->title || "entry: " . $entry->id;
     $param->{entry_text}      = $entry->text;
-    $param->{entry_text_head} = $text_head;
+    $param->{entry_text_raw}  = $entry->text;
+    $param->{entry_summary_lines} = \@lines;
     $param->{entry_views}     = $entry->to_ping_urls; ## hack
     if ( my $author = $entry->author ) {
         $app->set_author_params($author, $param);
@@ -239,7 +238,11 @@ sub save {
     $entry->blog_id(MT->config->MTMLPadBlogID);
     $entry->status( MT::Entry::RELEASE() );
     $entry->title( $app->param('title') );
-    $entry->text( $app->param('text') );
+    my $text = $app->param('text');
+    my $summary = $app->param('summary');
+    chomp $summary;
+    $entry->text_more( $summary );
+    $entry->text( $text );
     $entry->save;
     $app->param( id => $entry->id );
     return $app->redirect( '/view/' . $entry->id );

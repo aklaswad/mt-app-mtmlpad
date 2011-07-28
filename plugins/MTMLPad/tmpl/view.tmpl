@@ -69,6 +69,13 @@ var timer = setInterval( preview, 500 );
 // Actions
 $('#save').click( function () {
     $('#text').val( editor.getValue() );
+    var summary = '';
+    $('div.CodeMirror-lines pre:not(.CodeMirror-cursor)')
+      .each( function ( idx, elm ) {
+        if ( idx > 2 ) return;
+        summary += $(elm).html() + "\n";
+      });
+    $('#summary').val( summary );
 });
 
 });
@@ -104,7 +111,7 @@ $('#save').click( function () {
             name="editor"
             id="editor"
             <mt:unless name="entry_editable">readonly="readonly"</mt:unless>
-        ><mt:if name="entry_text"><mt:var name="entry_text" encode_html="1"></mt:if></textarea>
+        ><mt:if name="entry_text_raw"><mt:var name="entry_text_raw" encode_html="1"></mt:if></textarea>
       </div>
       <div id="preview-area">
         <pre id="preview"></pre>
@@ -115,6 +122,7 @@ $('#save').click( function () {
           <input type="hidden" name="id" value="<mt:var name="entry_id">" />
     </mt:if>
           <input type="hidden" name="text" id="text" />
+          <input type="hidden" name="summary" id="summary" />
   <mt:if name="entry_editable">
           <button id="save"><mt:if name="entry_id">Update<mt:else>Save</mt:if></button>
           <mt:if name="entry_id"><a class="button" id="delete" href="/delete/<mt:var name="entry_id">">Delete</a></mt:if>

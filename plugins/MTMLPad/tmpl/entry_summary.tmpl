@@ -3,5 +3,21 @@
     <a href="<mt:var name="config.MTMLPadURL"><mt:var name="entry_id">"><mt:var name="entry_title" escape="html"></a> <mt:if name="entry_views"><mt:var name="entry_views"> views</mt:if>
     <span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
   </div>
-  <textarea class="snipet"><mt:var name="entry_text_head" escape="html"></textarea>
+
+  <div class="CodeMirror snipet">
+    <div class="CodeMirror-gutter">
+      <div class="CodeMirror-gutter-text">
+      <mt:loop name="entry_summary_lines">
+          <pre><mt:var name="__counter__"></pre>
+      </mt:loop>
+      </div>
+    </div>
+    <div class="CodeMirror-lines">
+      <div style="position: relative; margin-left: 27px;">
+      <mt:loop name="entry_summary_lines">
+        <pre "style="white-space: pre; word-wrap: normal"><mt:var name="__value__"></pre>
+      </mt:loop>
+      </div>
+    </div>
+  </div>
 </div>

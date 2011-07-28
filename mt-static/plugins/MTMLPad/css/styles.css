@@ -29,8 +29,16 @@ textarea#text, div.CodeMirror {
     overflow: auto;
 }
 
-.CodeMirror pre {
-    overflow: visible;
+pre.CodeMirror,
+CodeMirror pre {
+    overflow: hidden;
+}
+
+pre.snipet {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 3px;
+    line-height: 1.2em;
 }
 
 .CodeMirror .cm-mt-comment {
@@ -55,8 +63,6 @@ textarea#text, div.CodeMirror {
 }
 
 /* misc */
-
-
 #header {
     color: #fff;
     width: 100%;

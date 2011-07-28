@@ -1,7 +1,7 @@
 (function(){
 
 var re_mtignore_start = RegExp('^<m' + 't:?ignore>', 'i');
-var re_mtignore_end   = RegExp('</m' + 't:?ignore[^>]*?>', 'i');
+var re_mtignore_end   = RegExp('^.*?</m' + 't:?ignore[^>]*?>', 'i');
 var re_mttag_start    = RegExp('^<[/$]?m' + 't:?[\\w:]+', 'i');
 var re_mttag_end      = RegExp('^[-/$]*?>', 'i');
 var re_mttag_attr     = RegExp('^[\\w:]+\\s*=\\s*');
