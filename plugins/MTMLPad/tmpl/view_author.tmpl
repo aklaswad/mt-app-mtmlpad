@@ -1,33 +1,4 @@
-<mt:setVarBlock name="page_script" append="1">
-$( function () {
-
-// Syntax Highlight
-var modeLoop = [ 'text', 'mtml', 'mtmloverlay' ];
-var currentMode = 1;
-var mtml_mode = true;
-var codeMirrorOptions = {
-  readOnly: true,
-  mode: 'mtml',
-  lineNumbers: true,
-  indentUnit: 0,
-  electricChars: false,
-  enterMode: 'flat',
-  tabMode: 'classic',
-  undoDepth: 0,
-};
-
-window.editors = [];
-$('textarea.snipet').each( function () {
-    var textarea = $(this).get(0);
-    (function () {
-        var editor = CodeMirror.fromTextArea(textarea, codeMirrorOptions );
-        window.editors.push(editor);
-    })();
-});
-});
-
-</mt:setVarBlock>
-
+<mt:setvarblock name="page_title"><mt:var name="author_name" escape="html"> | <mt:var name="application_name"></mt:setvarblock>
 <mt:include name="header.tmpl" component="MTMLPad">
 
 <div id="content" class="author-view-content">
@@ -35,7 +6,14 @@ $('textarea.snipet').each( function () {
     <div id="author-userpic">
       <img class="userpic-large" src="<mt:var name="author_userpic" escape="html">"/>
     </div>
-    <h1><mt:var name="author_name" escape="html"><mt:if name="author_external_profile_url"><a href="<mt:var name="author_external_profile_url" escape="html">"><img class="auth-icon icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/<mt:var name="author_auth_type">.png" /></a></mt:if></h1>
+    <h1>
+      <mt:var name="author_name" escape="html">
+<mt:ignore>
+      <mt:if name="author_external_profile_url">
+        <a href="<mt:var name="author_external_profile_url" escape="html">"><img class="auth-icon icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/<mt:var name="author_auth_type">.png" /></a>
+      </mt:if>
+</mt:ignore>
+    </h1>
     <ul class="author-description">
       <li>posted <mt:var name="author_post_count"> entries</li>
     </ul>

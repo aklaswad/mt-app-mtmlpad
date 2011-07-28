@@ -1,3 +1,15 @@
+<mt:setvarblock name="page_title">
+    <mt:if name="entry_id">
+      <mt:if name="entry_title">
+        <mt:var name="entry_title" escape="html">
+      <mt:else>
+        mtml <mt:var name="entry_id">
+      </mt:if>
+    <mt:else>
+      Create New Post
+    </mt:if>
+ | <mt:var name="application_name">
+</mt:setvarblock>
 <mt:setVarBlock name="page_script" append="1">
 $( function () {
 
@@ -70,6 +82,8 @@ var timer = setInterval( preview, 500 );
 $('#save').click( function () {
     $('#text').val( editor.getValue() );
     var summary = '';
+
+    editor.setSelection({ line: 0, ch: 0 }, { line: 0, ch: 0 });
     $('div.CodeMirror-lines pre:not(.CodeMirror-cursor)')
       .each( function ( idx, elm ) {
         if ( idx > 2 ) return;
@@ -78,16 +92,25 @@ $('#save').click( function () {
     $('#summary').val( summary );
 });
 
+// Actions
+$('#delete').click( function () {
+    if ( confirm('Are you sure you want to delete this entry?') )
+        return true;
+    return false;
+});
+
 });
 
 </mt:setVarBlock>
 
 <mt:setVarBlock name="entry_title_html">
 <mt:if name="new_object">
-          <input name="title" placeholder="Title" />
+          <input name="title" id="title" placeholder="Title" />
 <mt:elseif name="entry_is_mine">
           <input
             name="title"
+            id="title"
+            placeholder="Title"
             <mt:if name="entry_title">value="<mt:var name="entry_title" escape="html">"</mt:if>
             <mt:unless name="entry_editable">disabled="disabled"</mt:unless>
           />
@@ -124,14 +147,17 @@ $('#save').click( function () {
           <input type="hidden" name="text" id="text" />
           <input type="hidden" name="summary" id="summary" />
   <mt:if name="entry_editable">
-          <button id="save"><mt:if name="entry_id">Update<mt:else>Save</mt:if></button>
-          <mt:if name="entry_id"><a class="button" id="delete" href="/delete/<mt:var name="entry_id">">Delete</a></mt:if>
+          <button class="button" id="save"><mt:if name="entry_id">Update<mt:else>Save</mt:if></button>
+          <mt:if name="entry_id">
+            <a class="button" id="delete" href="/delete/<mt:var name="entry_id">">Delete</a>
+          </mt:if>
   </mt:if>
       </div>
-
+<mt:ignore>
 <mt:loop name="entry_tags">
 <mt:var name="__value__">
 </mt:loop>
+</mt:ignore>
     </form>
   </div>
 

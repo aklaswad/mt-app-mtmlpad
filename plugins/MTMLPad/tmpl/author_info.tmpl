@@ -1,7 +1,17 @@
 <a href="<mt:var name="config.MTMLPadURL">author/<mt:var name="author_id">">
+  <mt:if name="author_is_me">
+    You
+  <mt:else>
     <mt:var name="author_name" escape="html">
+  </mt:if>
+  <mt:if name="author_userpic">
     <img class="userpic icon-small" src="<mt:var name="author_userpic" escape="html">" />
+  <mt:else>
+    <img class="userpic icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg" />
+  </mt:if>
 </a>
+
+
 <mt:ignore>
 <mt:if name="author_external_profile_url">
     <a href="<mt:var name="author_external_profile_url" escape="html">">

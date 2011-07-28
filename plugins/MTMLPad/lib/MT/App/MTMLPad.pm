@@ -86,6 +86,7 @@ sub prepare_standard_params {
     my ( $sess_obj, $commenter ) = $app->_get_commenter_session();
     my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID )
         or die "Internal Error: Blog for MTMLPad not found.";
+    $param{application_name} = "MTMLPad";
     $param{blog} = $blog;
 
     ## FIXME: MT::App returns empty value. maybe because of difference
@@ -136,7 +137,7 @@ sub set_entry_params {
 
     my @lines = split "\n", ($entry->text_more || '');
     $param->{entry_id}            = $entry->id;
-    $param->{entry_title}         = $entry->title || "entry: " . $entry->id;
+    $param->{entry_title}         = $entry->title;
     $param->{entry_text}          = $entry->text;
     $param->{entry_text_raw}      = $entry->text;
     $param->{entry_summary_lines} = \@lines;
@@ -262,6 +263,9 @@ sub save {
     $entry->title( $app->param('title') );
     my $text = $app->param('text');
     my $summary = $app->param('summary');
+    if ( $summary =~ m{<(?!/?span)} ) {
+        return $app->error( 'Invalid Request' );
+    }
     chomp $summary;
     $entry->text_more( $summary );
     $entry->text( $text );

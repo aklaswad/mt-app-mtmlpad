@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<title>MTML Pad</title>
+<title><mt:if name="page_title"><mt:var name="page_title"><mt:else><mt:var name="application_name"></mt:if></title>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript" src="<mt:var name="static_uri">plugins/MTMLPad/CodeMirror2/lib/codemirror.js"></script>
 <script type="text/javascript" src="<mt:var name="static_uri">plugins/MTMLPad/js/codemirror/mtml-mode.js"></script>
@@ -19,8 +19,12 @@
 
     <div id="user-box">
       <mt:if name="user">
-            <a id="create-new" class="button" href="<mt:var name="config.MTMLPadURL">new/"><span>Create New</span></a>
-            <mt:if name="user_userpic"><img class="icon-small" src="<mt:var name="user_userpic" escape="html">" /></mt:if>
+            <a id="create-new" class="button" href="<mt:var name="config.MTMLPadURL">new/">Create New</a>
+            <mt:if name="user_userpic">
+              <img class="icon-small" src="<mt:var name="user_userpic" escape="html">" />
+            <mt:else>
+              <img class="userpic icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg" />
+            </mt:if>
 
             <a href="#" id="open-usermenu-panel"><mt:var name="user_name" escape="html"></a>
             <div id="usermenu-panel" class="dropdown" style="display: none;">
