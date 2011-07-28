@@ -3,6 +3,8 @@ use strict;
 use warnings;
 use MT::App;
 use MT::Entry;
+use MT::Builder;
+use MT::Template::Context;
 use base qw( MT::App::Comments );
 use MT::CMS::OAuth;
 
@@ -243,9 +245,32 @@ sub save {
     chomp $summary;
     $entry->text_more( $summary );
     $entry->text( $text );
+    my @tags = _taglist_from_text($text);
+    $entry->set_tags(@tags);
     $entry->save;
     $app->param( id => $entry->id );
     return $app->redirect( '/view/' . $entry->id );
+}
+
+sub _taglist_from_text {
+    my $text = shift;
+    my $build = MT::Builder->new;
+    my $ctx   = MT::Template::Context->new;
+    my $tokens = $build->compile($ctx, $text);
+    my %tags;
+    _taglist_core( $tokens, \%tags );
+    return wantarray ? keys %tags : \%tags;
+}
+
+sub _taglist_core {
+    my ( $tokens, $hashref ) = @_;
+    for my $token ( @$tokens ) {
+        my $tag = lc $token->[0];
+        next if $tag eq 'text';
+        $hashref->{$tag} ||= 0;
+        $hashref->{$tag}++;
+        _taglist_core( $token->[2], $hashref ) if $token->[2];
+    }
 }
 
 sub delete_entry {
