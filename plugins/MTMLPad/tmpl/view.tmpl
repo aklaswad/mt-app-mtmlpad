@@ -128,6 +128,10 @@ $('#save').click( function () {
           <mt:if name="entry_id"><a class="button" id="delete" href="/delete/<mt:var name="entry_id">">Delete</a></mt:if>
   </mt:if>
       </div>
+
+<mt:loop name="entry_tags">
+<mt:var name="__value__">
+</mt:loop>
     </form>
   </div>
 

@@ -7,6 +7,7 @@ use MT::Builder;
 use MT::Template::Context;
 use base qw( MT::App::Comments );
 use MT::CMS::OAuth;
+use MT::Util qw( relative_date );
 
 sub init {
     my $app = shift;
@@ -131,17 +132,23 @@ sub set_entry_params {
     my $app = shift;
     my ( $entry, $param ) = @_;
     $param = {} unless defined $param;
+    my $login_user = $app->user;
+
     my @lines = split "\n", ($entry->text_more || '');
-    $param->{entry_id}        = $entry->id;
-    $param->{entry_title}     = $entry->title || "entry: " . $entry->id;
-    $param->{entry_text}      = $entry->text;
-    $param->{entry_text_raw}  = $entry->text;
+    $param->{entry_id}            = $entry->id;
+    $param->{entry_title}         = $entry->title || "entry: " . $entry->id;
+    $param->{entry_text}          = $entry->text;
+    $param->{entry_text_raw}      = $entry->text;
     $param->{entry_summary_lines} = \@lines;
-    $param->{entry_views}     = $entry->to_ping_urls; ## hack
+    $param->{entry_views}         = $entry->to_ping_urls; ## hack
+    $param->{entry_tags}          = [ $entry->tags ];
+
+    my $blog = MT->model('blog')->load($entry->blog_id);
+    my $created_on = $entry->created_on;
+    $param->{entry_created_on}    = relative_date( $created_on, time, $blog );
     if ( my $author = $entry->author ) {
         $app->set_author_params($author, $param);
     }
-    my $login_user = $app->user;
     if ( $login_user ) {
         $param->{entry_is_mine} = $entry->author_id == $login_user->id ? 1 : 0;
         $param->{entry_editable} = $param->{entry_is_mine};
@@ -179,17 +186,28 @@ sub top {
     my $app = shift;
     my $param = $app->prepare_standard_params;
     $param->{script_url} = '/';
+    my $offset = int($app->param('offset')) || 0;
+    my $entries_per_page = 10;
     my @entry_objs = MT->model('entry')->load({
             blog_id => MT->config->MTMLPadBlogID,
         }, {
+            sort       => 'created_on',
             direction  => 'descend',
-            limit      => 10,
+            limit      => $entries_per_page + 1,
+            offset     => $offset,
     });
     my @entries;
     for my $entry ( @entry_objs ) {
         push @entries, $app->set_entry_params($entry);
     }
+    my $has_next;
+    if ( scalar @entries > $entries_per_page ) {
+        pop @entries;
+        $has_next = 1;
+    }
     $param->{entries} = \@entries;
+    $param->{has_next} = $has_next;
+    $param->{next_offset} = $offset + $entries_per_page;
     my $plugin = MT->component('MTMLPad');
     my $tmpl = $plugin->load_tmpl('top.tmpl', $param);
     my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );

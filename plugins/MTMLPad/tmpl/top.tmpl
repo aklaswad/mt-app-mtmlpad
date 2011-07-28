@@ -1,35 +1,4 @@
-<mt:setVarBlock name="page_script" append="1">
-$( function () {
-
-// Syntax Highlight
-var modeLoop = [ 'text', 'mtml', 'mtmloverlay' ];
-var currentMode = 1;
-var mtml_mode = true;
-var codeMirrorOptions = {
-  readOnly: true,
-  mode: 'mtml',
-  lineNumbers: true,
-  indentUnit: 0,
-  electricChars: false,
-  enterMode: 'flat',
-  tabMode: 'classic',
-  undoDepth: 0,
-};
-
-window.editors = [];
-$('textarea.snipet').each( function () {
-    var textarea = $(this).get(0);
-    (function () {
-        var editor = CodeMirror.fromTextArea(textarea, codeMirrorOptions );
-        window.editors.push(editor);
-    })();
-});
-});
-
-</mt:setVarBlock>
-
 <mt:include name="header.tmpl" component="MTMLPad">
-
 
 <div id="content">
 
@@ -42,6 +11,10 @@ $('textarea.snipet').each( function () {
     <mt:loop name="entries">
         <mt:include name="entry_summary.tmpl" component="MTMLPad" />
     </mt:loop>
+    <mt:if name="has_next">
+      <a href="<mt:var name="config.MTMLPadURL">?offset=<mt:var name="next_offset">">Next</a>
+    </mt:if>
+
   </div>
 
   <div id="news">
@@ -55,8 +28,8 @@ $('textarea.snipet').each( function () {
         </div>
     </mt:entries>
   </div>
-
 </div>
+
 
 <mt:include name="footer.tmpl" component="MTMLPad">
 

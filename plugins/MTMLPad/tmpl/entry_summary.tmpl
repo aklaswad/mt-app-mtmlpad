@@ -1,7 +1,7 @@
 <div class="entry-summary">
   <div class="entry-summary-header">
     <a href="<mt:var name="config.MTMLPadURL"><mt:var name="entry_id">"><mt:var name="entry_title" escape="html"></a> <mt:if name="entry_views"><mt:var name="entry_views"> views</mt:if>
-    <span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
+    <span class="author-summary"><mt:var name="entry_created_on"> by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
   </div>
 
   <div class="CodeMirror snipet">
@@ -20,4 +20,9 @@
       </div>
     </div>
   </div>
+
+<mt:loop name="entry_tags">
+<mt:var name="__value__">
+</mt:loop>
+
 </div>
