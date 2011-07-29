@@ -167,7 +167,7 @@ sub set_author_params {
     my ( $author, $param ) = @_;
     $param = {} unless defined $param;
     $param->{author_id}       = $author->id;
-    $param->{author_name}     = $author->nickname;
+    $param->{author_name}     = $author->nickname || $author->auth_type . ': ' . $author->name;
     $param->{author_userpic}  = $author->userpic_url();
     $param->{author_userpic_medium}  = $author->userpic_url( Width => 28, Height => 28, Square => 1 );
     $param->{author_userpic_small}  = $author->userpic_url( Width => 20, Height => 20, Square => 1 );
