@@ -55,7 +55,7 @@ builder {
         Plack::App::File->new({ root => "mt-static" });
     };
     mount "/favicon.ico", builder {
-        Plack::App::File->new({ root => "mt-static" });
+        Plack::App::File->new( file => 'mtml-pad.ico' );
     };
     mount "/", $mt_app;
 };
