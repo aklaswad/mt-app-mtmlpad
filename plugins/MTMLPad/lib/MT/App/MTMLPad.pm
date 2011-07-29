@@ -16,6 +16,7 @@ sub init {
         top  => \&top,
         view => \&view,
         save => \&save,
+        list => \&list_entries,
         delete => \&delete_entry,
         author => \&view_author,
         login => \&login,
@@ -146,7 +147,11 @@ sub set_entry_params {
 
     my $blog = MT->model('blog')->load($entry->blog_id);
     my $created_on = $entry->created_on;
+    $param->{entry_created_on_ts} = $created_on,
     $param->{entry_created_on}    = relative_date( $created_on, time, $blog );
+    my $modified_on = $entry->created_on;
+    $param->{entry_modified_on_ts} = $created_on,
+    $param->{entry_modified_on}    = relative_date( $created_on, time, $blog );
     if ( my $author = $entry->author ) {
         $app->set_author_params($author, $param);
     }
@@ -213,6 +218,55 @@ sub top {
     $param->{prev_offset} = $offset - $entries_per_page;
     my $plugin = MT->component('MTMLPad');
     my $tmpl = $plugin->load_tmpl('top.tmpl', $param);
+    my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
+    $tmpl->context->stash( blog => $blog );
+    return $tmpl;
+}
+
+sub list_entries {
+    my $app = shift;
+    my $param = $app->prepare_standard_params;
+    $param->{script_url} = '/';
+    my $offset = int($app->param('offset')) || 0;
+    my $entries_per_page = 10;
+    my @entry_objs = MT->model('entry')->load({
+            blog_id => MT->config->MTMLPadBlogID,
+        }, {
+            sort       => 'created_on',
+            direction  => 'descend',
+            limit      => $entries_per_page + 1,
+            offset     => $offset,
+    });
+    my @entries;
+    for my $entry ( @entry_objs ) {
+        push @entries, $app->set_entry_params($entry);
+    }
+    my $has_next;
+    if ( scalar @entries > $entries_per_page ) {
+        pop @entries;
+        $has_next = 1;
+    }
+    $param->{entries} = \@entries;
+    $param->{has_next} = $has_next;
+    $param->{has_prev} = $offset > 0;
+    $param->{next_offset} = $offset + $entries_per_page;
+    $param->{prev_offset} = $offset - $entries_per_page;
+
+    my %format = (
+        html => {
+            tmpl => 'list_posts.tmpl',
+        },
+        atom => {
+            tmpl => 'list_atom.tmpl',
+        },
+        json => {
+            tmpl => 'list_json.tmpl',
+        },
+    );
+    my $mode = $app->param('format') || 'html';
+    my $format = $format{$mode};
+    my $plugin = MT->component('MTMLPad');
+    my $tmpl = $plugin->load_tmpl($format->{tmpl}, $param);
     my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
     $tmpl->context->stash( blog => $blog );
     return $tmpl;

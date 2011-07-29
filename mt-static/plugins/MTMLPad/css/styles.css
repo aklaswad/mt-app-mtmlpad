@@ -317,12 +317,17 @@ body {
 
 /* Index screen */
 
-#about, #recent-posts {
+#about {
+    width: 100%;
+}
+
+#recent-posts {
     width: 600px;
     float: left;
 }
 
 #news {
+    margin: 0 10px;
     width: 400px;
     float: left;
 }
@@ -407,15 +412,13 @@ img.userpic-large {
 
 .asset {
     width: 100%;
-    margin: 1.1em;
+    margin: 0 0 1.1em 0;
     background-color: #fff;
 }
 
 .asset-header {
     padding: 2px 5px;
     border-bottom: 1px solid #abc;
-    background-color: #eee;
-    border-radius: 5px;
 }
 
 .asset-body {
