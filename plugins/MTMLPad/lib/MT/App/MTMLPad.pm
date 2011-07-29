@@ -19,7 +19,7 @@ sub init {
         list => \&list_entries,
         delete => \&delete_entry,
         author => \&view_author,
-        login => \&login,
+        login => \&_login,
         oauth_verified => \&oauth_verified,
     );
     $app->{requires_login} = 0;
@@ -34,7 +34,7 @@ sub load_tmpl {
 
 sub script { return '/' }
 
-sub login {
+sub _login {
     my $app = shift;
     my $client = $app->param('client');
     my $endpoint = MT->config->MTMLPadURL . 'oauth_verified';
