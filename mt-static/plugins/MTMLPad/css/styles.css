@@ -240,7 +240,7 @@ a.load-more-posts:hover {
     min-height: 500px;
     margin: 0 auto;
     overflow: auto;
-    padding: 32px 10px 0 10px;
+    padding: 32px 10px 20px 10px;
     background-color: #fff;
     border: 1px solid #ddd;
 }
@@ -297,16 +297,18 @@ body {
 }
 
 .entry-summary {
-    border: 1px solid #ddd;
-    margin-bottom: 1.1em;
-    background-color: #fafafa;
+    margin-bottom: 2.5em;
     position: relative;
 }
 
 .entry-summary-header {
-    padding: 3px 0;
+    padding: 3px;
     height: 24px;
     vertical-align: middle;
+}
+
+.entry-summary-title {
+    font-size: 1.1em;
 }
 
 .author-summary {
@@ -398,7 +400,7 @@ body {
     background-color: #ddd;
 }
 
-.editor-view-content input {
+.editor-view-content input#title {
     font-size: 24px;
     height: 30px;
     width: 450px;
@@ -410,6 +412,22 @@ body {
 
 .editor-view-content .entry-summary-header h1 {
     display: inline;
+}
+
+#comments {
+    width: 500px;
+    margin: 20px;
+}
+
+#comments textarea {
+    width: 500px;
+    height: 120px;
+}
+
+#save-comment {
+    font-size: 14px;
+    width: 120px;
+    float: right;
 }
 
 /* Author screen */

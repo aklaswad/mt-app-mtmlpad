@@ -20,6 +20,7 @@ sub init {
         delete => \&delete_entry,
         author => \&view_author,
         login => \&_login,
+        save_comment => \&save_comment,
         oauth_verified => \&oauth_verified,
     );
     $app->{requires_login} = 0;
@@ -144,7 +145,10 @@ sub set_entry_params {
     $param->{entry_summary_lines} = \@lines;
     $param->{entry_views}         = $entry->to_ping_urls; ## hack
     $param->{entry_tags}          = [ $entry->tags ];
-
+    $param->{entry_comment_count} = MT->model('comment')->count({
+        entry_id => $entry->id,
+        visible  => 1,
+    });
     my $blog = MT->model('blog')->load($entry->blog_id);
     my $created_on = $entry->created_on;
     $param->{entry_created_on_ts} = $created_on,
@@ -159,6 +163,30 @@ sub set_entry_params {
         $param->{entry_is_mine} = $entry->author_id == $login_user->id ? 1 : 0;
         $param->{entry_editable} = $param->{entry_is_mine};
     }
+    $param;
+}
+
+sub set_comments {
+    my $app = shift;
+    my ( $entry, $param ) = @_;
+    $param = {} unless defined $param;
+    my $login_user = $app->user;
+    my @comment_objs = MT->model('comment')->load({
+        entry_id => $entry->id,
+    });
+    my $blog = MT->model('blog')->load($entry->blog_id);
+    my @comments;
+    for my $comment ( @comment_objs ) {
+        my %comment;
+        my $author = MT->model('author')->load($comment->commenter_id);
+        $app->set_author_params( $author, \%comment );
+        $comment{comment_text} = $comment->text;
+        my $created_on = $comment->created_on;
+        $comment{comment_created_on_ts} = $created_on;
+        $comment{comment_created_on}    = relative_date( $created_on, time, $blog );
+        push @comments, \%comment;
+    }
+    $param->{comments} = \@comments;
     $param;
 }
 
@@ -263,15 +291,17 @@ sub list_entries {
 sub view {
     my $app = shift;
     my $param = $app->prepare_standard_params;
+    my $entry;
     if ( my $id = $app->param('id') ) {
         return $app->error('Bad request') if $id =~ /\D/;
-        my $entry = MT->model('entry')->load($id)
+        $entry = MT->model('entry')->load($id)
             or return $app->error('Bad request');
         # use to_ping_urls column for page view.
         my $views = $entry->to_ping_urls || 0;
         $entry->to_ping_urls( $views + 1 );
         $entry->save;
         $app->set_entry_params($entry, $param);
+        $app->set_comments($entry, $param);
     }
     else {
         $param->{new_object}     = 1;
@@ -282,6 +312,7 @@ sub view {
     my $tmpl =  $plugin->load_tmpl('view.tmpl', $param );
     my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
     $tmpl->context->stash( blog => $blog );
+    $tmpl->context->stash( entry => $entry );
     return $tmpl;
 }
 
@@ -352,6 +383,27 @@ sub delete_entry {
     }
     $entry->remove or return $app->error('Failed to delete entry');
     return $app->redirect( '/' );
+}
+
+sub save_comment {
+    my $app = shift;
+    my $param = $app->prepare_standard_params;
+    my $entry_id = $app->param('entry_id')
+        or return $app->error('Invalid request');
+    return $app->error( 'Invalid request' )
+        if $entry_id =~ /\D/;
+    my $author_id = $app->user->id
+        or return $app->error('Invalid request');
+    my $comment_text = $app->param('comment_text')
+        or return $app->error('Comment text is required');
+    my $comment = MT->model('comment')->new;
+    $comment->blog_id( MT->config->MTMLPadBlogID );
+    $comment->entry_id( $entry_id );
+    $comment->commenter_id( $author_id );
+    $comment->text( $comment_text );
+    $comment->visible( 1 );  # No spam filter now
+    $comment->save;
+    $app->redirect( '/view/' . $entry_id );
 }
 
 sub view_author {

@@ -1,6 +1,6 @@
 <div class="entry-summary">
   <div class="entry-summary-header">
-    <a href="<mt:var name="config.MTMLPadURL"><mt:var name="entry_id">">
+    <a class="entry-summary-title" href="<mt:var name="config.MTMLPadURL"><mt:var name="entry_id">">
         <mt:if name="entry_title">
           <mt:var name="entry_title" escape="html">
         <mt:else>
@@ -35,5 +35,7 @@
 <mt:var name="__value__">
 </mt:loop>
 </mt:ignore>
-
+  <mt:if name="entry_comment_count">
+    <mt:var name="entry_comment_count"> comments
+  </mt:if>
 </div>

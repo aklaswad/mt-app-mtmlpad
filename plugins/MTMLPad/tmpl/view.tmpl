@@ -159,9 +159,27 @@ $('#delete').click( function () {
 </mt:loop>
 </mt:ignore>
     </form>
+
+    <div id="comments">
+      <h2>Comments</h2>
+      <mt:loop name="comments">
+      <div class="entry-summary">
+        <div class="entry-summary-header">
+          <span class="author-summary"><mt:var name="comment_created_on"> by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
+        </div>
+        <mt:var name="comment_text" escape="html">
+      </div>
+      </mt:loop>
+      <mt:if name="user_id">
+      <form action="/" method="POST">
+        <input type="hidden" name="__mode" value="save_comment" />
+        <input type="hidden" name="entry_id" value="<mt:var name="entry_id">" />
+        <textarea name="comment_text"></textarea>
+        <input class="button" id="save-comment" type="submit" value="comment" />
+      </form>
+      </mt:if>
+    </div>
   </div>
-
   <div id="preview-state" style="display: none"></div>
-
 
 <mt:include name="footer.tmpl" component="MTMLPad">
