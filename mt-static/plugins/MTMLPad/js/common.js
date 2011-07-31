@@ -28,5 +28,15 @@ $(function () {
         });
         return false;
     });
+
+    $('a.load-more-posts').live('click', function () {
+      var $button = $(this);
+      var url = $button.attr('data-next-url');
+      var $outer = $button.parent();
+      $.get(url, function( data, jqXHR ) {
+          $button.remove();
+          $outer.append(data);
+      });
+    });
 });
 

@@ -7,18 +7,7 @@
   </div>
 
   <div id="recent-posts" class="entry-list">
-    <h2>Recent Posts</h2>
-    <mt:loop name="entries">
-        <mt:include name="entry_summary.tmpl" component="MTMLPad" />
-    </mt:loop>
-
-    <mt:if name="has_prev">
-      <a href="<mt:var name="config.MTMLPadURL">?offset=<mt:var name="prev_offset">">Prev</a>
-    </mt:if>
-    <mt:if name="has_next">
-      <a href="<mt:var name="config.MTMLPadURL">?offset=<mt:var name="next_offset">">Next</a>
-    </mt:if>
-
+    <mt:include name="list_posts.tmpl" component="MTMLPad" />
   </div>
 
   <div id="news">

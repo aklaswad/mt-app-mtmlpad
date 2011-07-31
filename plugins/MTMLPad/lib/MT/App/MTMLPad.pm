@@ -188,14 +188,20 @@ sub set_author_params {
     $param;
 }
 
-sub top {
+sub set_entries {
     my $app = shift;
-    my $param = $app->prepare_standard_params;
-    $param->{script_url} = '/';
+    my ( $param, %opts ) = @_;
+    my %filter;
+    if ( my $aid = $opts{author_id} || $app->param('author_id') ) {
+        $filter{author_id} = $aid;
+    }
+    my $filter_str = join( '', ( map { sprintf "&%s=%s", $_, $filter{$_} } keys %filter ) );
+    $param->{filter_str} = $filter_str;
     my $offset = int($app->param('offset')) || 0;
-    my $entries_per_page = 10;
+    my $entries_per_page = 10; # FIXME: hardcoded.
     my @entry_objs = MT->model('entry')->load({
             blog_id => MT->config->MTMLPadBlogID,
+            %filter
         }, {
             sort       => 'created_on',
             direction  => 'descend',
@@ -211,11 +217,17 @@ sub top {
         pop @entries;
         $has_next = 1;
     }
-    $param->{entries} = \@entries;
-    $param->{has_next} = $has_next;
-    $param->{has_prev} = $offset > 0;
+    $param->{entries}     = \@entries;
+    $param->{has_next}    = $has_next;
     $param->{next_offset} = $offset + $entries_per_page;
-    $param->{prev_offset} = $offset - $entries_per_page;
+}
+
+sub top {
+    my $app = shift;
+    my $param = $app->prepare_standard_params;
+    $param->{script_url} = '/';
+    my $offset = int($app->param('offset')) || 0;
+    $app->set_entries( $param );
     my $plugin = MT->component('MTMLPad');
     my $tmpl = $plugin->load_tmpl('top.tmpl', $param);
     my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
@@ -227,31 +239,7 @@ sub list_entries {
     my $app = shift;
     my $param = $app->prepare_standard_params;
     $param->{script_url} = '/';
-    my $offset = int($app->param('offset')) || 0;
-    my $entries_per_page = 10;
-    my @entry_objs = MT->model('entry')->load({
-            blog_id => MT->config->MTMLPadBlogID,
-        }, {
-            sort       => 'created_on',
-            direction  => 'descend',
-            limit      => $entries_per_page + 1,
-            offset     => $offset,
-    });
-    my @entries;
-    for my $entry ( @entry_objs ) {
-        push @entries, $app->set_entry_params($entry);
-    }
-    my $has_next;
-    if ( scalar @entries > $entries_per_page ) {
-        pop @entries;
-        $has_next = 1;
-    }
-    $param->{entries} = \@entries;
-    $param->{has_next} = $has_next;
-    $param->{has_prev} = $offset > 0;
-    $param->{next_offset} = $offset + $entries_per_page;
-    $param->{prev_offset} = $offset - $entries_per_page;
-
+    $app->set_entries($param);
     my %format = (
         html => {
             tmpl => 'list_posts.tmpl',
@@ -374,21 +362,10 @@ sub view_author {
     return $app->error('Bad request') if $id =~ /\D/;
     my $author = MT->model('author')->load($id)
         or return $app->error('Bad request');
+    $app->param( author_id => $id );
     $app->set_author_params($author, $param);
+    $app->set_entries($param);
 
-    my @entry_objs = MT->model('entry')->load({
-            author_id => $id,
-            blog_id   => MT->config->MTMLPadBlogID,
-        }, {
-            sort       => 'created_on',
-            direction  => 'descend',
-    });
-    my @entries;
-    for my $entry ( @entry_objs ) {
-        push @entries, $app->set_entry_params($entry);
-    }
-
-    $param->{author_entries} = \@entries;
     my $plugin = MT->component('MTMLPad');
     my $tmpl = $plugin->load_tmpl('view_author.tmpl', $param );
     my $blog = MT->model('blog')->load( MT->config->MTMLPadBlogID );
