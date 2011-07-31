@@ -219,6 +219,20 @@ pre.snipet {
     background-position: 3px center;
 }
 
+a.load-more-posts {
+    width: 100%;
+    color: #777;
+    height: 2.2em;
+    font-size: 1.4em;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+a.load-more-posts:hover {
+    width: 100%;
+    color: #444;
+    margin-bottom: 20px;
+}
 
 #content {
     min-width: 800px;
