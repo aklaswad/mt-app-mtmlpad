@@ -1,0 +1,31 @@
+<$mt:HTTPContentType type="application/atom+xml"$><?xml version="1.0" encoding="<$mt:PublishCharset$>"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title><$mt:BlogName remove_html="1" encode_xml="1"$></title>
+    <link rel="alternate" type="text/html" href="<$mt:BlogURL encode_xml="1"$>" />
+    <link rel="self" type="application/atom+xml" href="<$mt:Link template="feed_recent"$>" />
+    <id>tag:<$mt:BlogHost exclude_port="1" encode_xml="1"$>,<$mt:Date ts="20110729000000" format="%Y-%m-%d"$>:<$mt:BlogRelativeURL encode_xml="1"$>/<$mt:BlogID$></id>
+    <updated><mt:Entries lastn="1"><$mt:EntryModifiedDate utc="1" format="%Y-%m-%dT%H:%M:%SZ"$></mt:Entries></updated>
+    <mt:If tag="BlogDescription"><subtitle><$mt:BlogDescription remove_html="1" encode_xml="1"$></subtitle></mt:If>
+    <generator uri="http://www.sixapart.com/movabletype/"><$mt:ProductName version="1"$></generator>
+<mt:loop name="entries">
+<entry>
+    <title><$mt:var name="entry_title" remove_html="1" encode_xml="1"$></title>
+    <link rel="alternate" type="text/html" href="<mt:var name="config.MTMLPadURL" encode_xml="1"$><mt:var name="entry_id">" />
+    <id><mt:var name="config.MTMLPadURL"><mt:var name="entry_id"></id>
+
+    <published><$mt:date utc="1" ts="$entry_created_on_ts" format="%Y-%m-%dT%H:%M:%SZ"$></published>
+    <updated><$mt:date utc="1" ts="$entry_modified_on_ts" format="%Y-%m-%dT%H:%M:%SZ"$></updated>
+
+    <summary><mt:var name="title"></summary>
+    <author>
+        <name><$mt:var name="author_name" encode_xml="1"$></name>
+        <uri><mt:var name="config.MTMLPadURL">author/<$mt:var name="author_id" encode_xml="1"$></uri></mt:If>
+    </author>
+    <mt:EntryIfTagged><mt:EntryTags><category term="<$mt:TagName normalize="1" encode_xml="1"$>" label="<$mt:TagName encode_xml="1"$>" scheme="http://www.sixapart.com/ns/types#tag" />
+    </mt:EntryTags></mt:EntryIfTagged>
+    <content type="html" xml:lang="<$mt:BlogLanguage ietf="1"$>" xml:base="<$mt:BlogURL encode_xml="1"$>">
+        <mt:var name="entry_text" encode_xml="1">
+    </content>
+</entry>
+</mt:loop>
+</feed>

@@ -1,0 +1,6 @@
+<mt:loop name="entries">
+    <mt:include name="entry_summary.tmpl" component="MTMLPad" />
+</mt:loop>
+<mt:if name="has_next">
+  <a class="button load-more-posts" data-next-url="<mt:var name="config.MTMLPadURL">?__mode=list&offset=<mt:var name="next_offset"><mt:var name="filter_str">">More posts...</a>
+</mt:if>
