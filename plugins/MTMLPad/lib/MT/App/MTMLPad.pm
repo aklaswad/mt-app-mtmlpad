@@ -9,11 +9,6 @@ use base qw( MT::App::Comments );
 use MT::CMS::OAuth;
 use MT::Util qw( relative_date );
 
-
-## HACKS
-# $entry->category_id is used to save fork origin id
-
-
 sub init {
     my $app = shift;
     $app->SUPER::init(@_) or return;
@@ -148,7 +143,7 @@ sub set_entry_params {
     $param->{entry_text}          = $entry->text;
     $param->{entry_text_raw}      = $entry->text;
     $param->{entry_summary_lines} = \@lines;
-    $param->{entry_views}         = $entry->to_ping_urls; ## hack
+    $param->{entry_views}         = $entry->page_view;
     $param->{entry_tags}          = [ $entry->tags ];
     $param->{entry_comment_count} = MT->model('comment')->count({
         entry_id => $entry->id,
@@ -169,7 +164,7 @@ sub set_entry_params {
         $param->{entry_editable} = $param->{entry_is_mine};
     }
 
-    if ( ( my $parent_id = $entry->category_id ) && !$_fork) {
+    if ( ( my $parent_id = $entry->parent_id ) && !$_fork) {
         my $parent = MT->model('entry')->load($parent_id);
         $param->{parent} = [ $app->set_entry_params($parent, undef, 1) ];
     }
@@ -306,9 +301,8 @@ sub view {
         return $app->error('Bad request') if $id =~ /\D/;
         $entry = MT->model('entry')->load($id)
             or return $app->error('Bad request');
-        # use to_ping_urls column for page view.
-        my $views = $entry->to_ping_urls || 0;
-        $entry->to_ping_urls( $views + 1 );
+        my $views = $entry->page_view || 0;
+        $entry->page_view( $views + 1 );
         $entry->save;
         $app->set_entry_params($entry, $param);
         $app->set_comments($entry, $param);
@@ -341,7 +335,7 @@ sub save {
             $entry->id(undef);
             $entry->created_on(undef);
             $entry->author_id( $param->{user_id} );
-            $entry->category_id( $orig->id );
+            $entry->parent_id( $orig->id );
         }
     }
     else {

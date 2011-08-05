@@ -1,5 +1,10 @@
 name: MTML Pad
 icon: hoge.png
+schema_version: 0.1
+object_types:
+    entry:
+        page_view: integer indexed
+        parent_id: integer indexed
 config_settings:
     MTMLPadURL:
         default: ~
