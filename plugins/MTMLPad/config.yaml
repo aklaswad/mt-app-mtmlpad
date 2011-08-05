@@ -1,4 +1,5 @@
 name: MTML Pad
+icon: hoge.png
 config_settings:
     MTMLPadURL:
         default: ~

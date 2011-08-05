@@ -30,6 +30,12 @@
     </div>
   </div>
 
+
+  <mt:loop name="parent">
+    Forked from <a href="/<mt:var name="entry_id">"><mt:if name="entry_title"><mt:var name="entry_title"><mt:else>mtml: <mt:var name="entry_id"></mt:if></a> by <a href="/author/<mt:var name="author_id">"><mt:var name="author_name"></a>
+  </mt:loop>
+
+
 <mt:ignore>
 <mt:loop name="entry_tags">
 <mt:var name="__value__">

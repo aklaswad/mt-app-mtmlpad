@@ -18,9 +18,6 @@ var modeLoop = [ 'text', 'mtml', 'mtmloverlay' ];
 var currentMode = 1;
 var mtml_mode = true;
 var codeMirrorOptions = {
-<mt:unless name="entry_editable">
-  readOnly: true,
-</mt:unless>
   mode: 'mtml',
   lineNumbers: true,
   indentUnit: 0,
@@ -125,6 +122,10 @@ $('#delete').click( function () {
 
       <div class="entry-summary-header">
         <mt:var name="entry_title_html">
+        <mt:loop name="parent">
+          Forked from <a href="/<mt:var name="entry_id">"><mt:if name="entry_title"><mt:var name="entry_title"><mt:else>mtml: <mt:var name="entry_id"></mt:if></a> by <a href="/author/<mt:var name="author_id">"><mt:var name="author_name"></a>
+        </mt:loop>
+
   <mt:if name="entry_id">
         <span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
   </mt:if>
@@ -146,12 +147,10 @@ $('#delete').click( function () {
     </mt:if>
           <input type="hidden" name="text" id="text" />
           <input type="hidden" name="summary" id="summary" />
-  <mt:if name="entry_editable">
-          <button class="button" id="save"><mt:if name="entry_id">Update<mt:else>Save</mt:if></button>
-          <mt:if name="entry_id">
+          <button class="button" id="save"><mt:if name="entry_id"><mt:if name="entry_is_mine">Update<mt:else>Fork and save</mt:if><mt:else>Save</mt:if></button>
+          <mt:if name="entry_is_mine">
             <a class="button" id="delete" href="/delete/<mt:var name="entry_id">">Delete</a>
           </mt:if>
-  </mt:if>
       </div>
 <mt:ignore>
 <mt:loop name="entry_tags">

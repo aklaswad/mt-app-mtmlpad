@@ -9,6 +9,11 @@ use base qw( MT::App::Comments );
 use MT::CMS::OAuth;
 use MT::Util qw( relative_date );
 
+
+## HACKS
+# $entry->category_id is used to save fork origin id
+
+
 sub init {
     my $app = shift;
     $app->SUPER::init(@_) or return;
@@ -133,7 +138,7 @@ sub set_default_tmpl_params {
 
 sub set_entry_params {
     my $app = shift;
-    my ( $entry, $param ) = @_;
+    my ( $entry, $param, $_fork ) = @_;
     $param = {} unless defined $param;
     my $login_user = $app->user;
 
@@ -162,6 +167,11 @@ sub set_entry_params {
     if ( $login_user ) {
         $param->{entry_is_mine} = $entry->author_id == $login_user->id ? 1 : 0;
         $param->{entry_editable} = $param->{entry_is_mine};
+    }
+
+    if ( ( my $parent_id = $entry->category_id ) && !$_fork) {
+        my $parent = MT->model('entry')->load($parent_id);
+        $param->{parent} = [ $app->set_entry_params($parent, undef, 1) ];
     }
     $param;
 }
@@ -324,8 +334,15 @@ sub save {
     if ( $id ) {
         $entry = MT->model('entry')->load($id)
             or return $app->error('Bad request');
-        return $app->error('Bad request')
-            if $entry->author_id != $param->{user_id};
+        if ( $entry->author_id != $param->{user_id} ) {
+            #Let's fork!
+            my $orig = $entry;
+            $entry = $orig->clone();
+            $entry->id(undef);
+            $entry->created_on(undef);
+            $entry->author_id( $param->{user_id} );
+            $entry->category_id( $orig->id );
+        }
     }
     else {
         $entry = MT->model('entry')->new;
