@@ -175,6 +175,7 @@ $('#delete').click( function () {
 </mt:ignore>
     </form>
 
+<mt:if name="entry_id">
     <div id="comments">
       <h2>Comments</h2>
       <mt:loop name="comments">
@@ -194,7 +195,10 @@ $('#delete').click( function () {
       </form>
       </mt:if>
     </div>
+</mt:if>
+
   </div>
+
   <div id="preview-state" style="display: none"></div>
 
 <mt:include name="footer.tmpl" component="MTMLPad">
