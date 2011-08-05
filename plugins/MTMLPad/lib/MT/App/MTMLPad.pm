@@ -230,7 +230,7 @@ sub set_entries {
     }
     my $filter_str = join( '', ( map { sprintf "&%s=%s", $_, $filter{$_} } keys %filter ) );
     $param->{filter_str} = $filter_str;
-    my $offset = int($app->param('offset')) || 0;
+    my $offset = int($app->param('offset') || 0);
     my $entries_per_page = 10; # FIXME: hardcoded.
     my @entry_objs = MT->model('entry')->load({
             blog_id => MT->config->MTMLPadBlogID,
@@ -259,7 +259,7 @@ sub top {
     my $app = shift;
     my $param = $app->prepare_standard_params;
     $param->{script_url} = '/';
-    my $offset = int($app->param('offset')) || 0;
+    my $offset = int($app->param('offset') || 0 );
     $app->set_entries( $param );
     my $plugin = MT->component('MTMLPad');
     my $tmpl = $plugin->load_tmpl('top.tmpl', $param);
