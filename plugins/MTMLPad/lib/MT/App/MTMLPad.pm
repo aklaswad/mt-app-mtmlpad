@@ -7,7 +7,7 @@ use MT::Builder;
 use MT::Template::Context;
 use base qw( MT::App::Comments );
 use MT::CMS::OAuth;
-use MT::Util qw( relative_date );
+use MT::Util qw( relative_date epoch2ts );
 
 sub init {
     my $app = shift;
@@ -325,6 +325,7 @@ sub save {
     my $param = $app->prepare_standard_params;
     my $id = $app->param('id');
     my $entry;
+    my $blog = MT->model('blog')->load(MT->config->MTMLPadBlogID);
     if ( $id ) {
         $entry = MT->model('entry')->load($id)
             or return $app->error('Bad request');
@@ -336,8 +337,12 @@ sub save {
             my $orig_title = $orig->title || 'entry:' . $orig->id;
             $entry->title( 'forked from: ' . $orig_title );
             $entry->created_on(undef);
+            $entry->modified_on(undef);
             $entry->author_id( $param->{user_id} );
             $entry->parent_id( $orig->id );
+        }
+        else {
+            $entry->modified_on( epoch2ts($blog, time) );
         }
     }
     else {
