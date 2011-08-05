@@ -147,10 +147,12 @@ $('#delete').click( function () {
     </mt:if>
           <input type="hidden" name="text" id="text" />
           <input type="hidden" name="summary" id="summary" />
+        <mt:if name="user_id">
           <button class="button" id="save"><mt:if name="entry_id"><mt:if name="entry_is_mine">Update<mt:else>Fork and save</mt:if><mt:else>Save</mt:if></button>
           <mt:if name="entry_is_mine">
             <a class="button" id="delete" href="/delete/<mt:var name="entry_id">">Delete</a>
           </mt:if>
+        </mt:if>
       </div>
 <mt:ignore>
 <mt:loop name="entry_tags">
