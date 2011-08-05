@@ -4,7 +4,7 @@
         <mt:if name="entry_title">
           <mt:var name="entry_title" escape="html">
         <mt:else>
-          mtml: <mt:var name="entry_id" escape="html">
+          entry:<mt:var name="entry_id" escape="html">
         </mt:if>
     </a>
     <mt:ignore>
@@ -30,9 +30,20 @@
     </div>
   </div>
 
-
   <mt:loop name="parent">
-    Forked from <a href="/<mt:var name="entry_id">"><mt:if name="entry_title"><mt:var name="entry_title"><mt:else>mtml: <mt:var name="entry_id"></mt:if></a> by <a href="/author/<mt:var name="author_id">"><mt:var name="author_name"></a>
+    Forked from
+    <a href="/<mt:var name="entry_id">">
+      <mt:if name="entry_title"><mt:var name="entry_title"><mt:else>entry:<mt:var name="entry_id"></mt:if>
+    </a>
+    by
+    <a href="/author/<mt:var name="author_id">">
+      <mt:var name="author_name">
+      <mt:if name="author_userpic">
+        <img class="userpic icon-minimal" src="<mt:var name="author_userpic" escape="html">" />
+      <mt:else>
+        <img class="userpic icon-minimal" src="<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg" />
+      </mt:if>
+    </a>
   </mt:loop>
 
 

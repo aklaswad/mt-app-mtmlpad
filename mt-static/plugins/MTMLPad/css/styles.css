@@ -296,6 +296,12 @@ body {
     border: 1px solid #ddd;
 }
 
+.icon-minimal {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #ddd;
+}
+
 .entry-summary {
     margin-bottom: 2.5em;
     position: relative;

@@ -111,8 +111,10 @@ $('#delete').click( function () {
             <mt:if name="entry_title">value="<mt:var name="entry_title" escape="html">"</mt:if>
             <mt:unless name="entry_editable">disabled="disabled"</mt:unless>
           />
-<mt:else>
+<mt:elseif name="entry_title">
           <h1><mt:var name="entry_title" escape="html"></h1>
+<mt:else>
+          <h1>entry:<mt:var name="entry_id" escape="html"></h1>
 </mt:if>
 </mt:setVarBlock>
 
@@ -123,7 +125,19 @@ $('#delete').click( function () {
       <div class="entry-summary-header">
         <mt:var name="entry_title_html">
         <mt:loop name="parent">
-          Forked from <a href="/<mt:var name="entry_id">"><mt:if name="entry_title"><mt:var name="entry_title"><mt:else>mtml: <mt:var name="entry_id"></mt:if></a> by <a href="/author/<mt:var name="author_id">"><mt:var name="author_name"></a>
+          Forked from
+          <a href="/<mt:var name="entry_id">">
+            <mt:if name="entry_title"><mt:var name="entry_title"><mt:else>entry:<mt:var name="entry_id"></mt:if>
+          </a>
+          by
+          <a href="/author/<mt:var name="author_id">">
+            <mt:var name="author_name">
+            <mt:if name="author_userpic">
+              <img class="userpic icon-minimal" src="<mt:var name="author_userpic" escape="html">" />
+            <mt:else>
+              <img class="userpic icon-minimal" src="<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg" />
+            </mt:if>
+          </a>
         </mt:loop>
 
   <mt:if name="entry_id">

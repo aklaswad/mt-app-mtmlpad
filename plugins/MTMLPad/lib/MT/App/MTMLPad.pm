@@ -333,6 +333,8 @@ sub save {
             my $orig = $entry;
             $entry = $orig->clone();
             $entry->id(undef);
+            my $orig_title = $orig->title || 'entry:' . $orig->id;
+            $entry->title( 'forked from: ' . $orig_title );
             $entry->created_on(undef);
             $entry->author_id( $param->{user_id} );
             $entry->parent_id( $orig->id );
