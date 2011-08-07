@@ -30,20 +30,27 @@
     </div>
   </div>
 
-  <mt:loop name="parent">
-    Forked from
-    <a href="/<mt:var name="entry_id">">
-      <mt:if name="entry_title"><mt:var name="entry_title"><mt:else>entry:<mt:var name="entry_id"></mt:if>
-    </a>
-    by
-    <a href="/author/<mt:var name="author_id">">
-      <mt:var name="author_name">
-      <mt:if name="author_userpic">
-        <img class="userpic icon-minimal" src="<mt:var name="author_userpic" escape="html">" />
-      <mt:else>
-        <img class="userpic icon-minimal" src="<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg" />
-      </mt:if>
-    </a>
+  <mt:if name="parent"><mt:setvar name="more_info" value="1"></mt:if>
+  <mt:if name="entry_comment_count"><mt:setvar name="more_info" value="1"></mt:if>
+
+<mt:if name="more_info">
+  <ul class="entry-summary-more-info">
+  <mt:loop name="entry_parent">
+    <li>
+      Forked from
+      <a href="/<mt:var name="entry_id">">
+        <mt:if name="entry_title"><mt:var name="entry_title"><mt:else>entry:<mt:var name="entry_id"></mt:if>
+      </a>
+      by
+      <a href="/author/<mt:var name="author_id">">
+        <mt:var name="author_name">
+        <mt:if name="author_userpic">
+          <img class="userpic icon-minimal" src="<mt:var name="author_userpic" escape="html">" />
+        <mt:else>
+          <img class="userpic icon-minimal" src="<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg" />
+        </mt:if>
+      </a>
+    </li>
   </mt:loop>
 
 
@@ -53,6 +60,8 @@
 </mt:loop>
 </mt:ignore>
   <mt:if name="entry_comment_count">
-    <mt:var name="entry_comment_count"> comments
+    <li><mt:var name="entry_comment_count"> comments</li>
   </mt:if>
+
+</mt:if>
 </div>

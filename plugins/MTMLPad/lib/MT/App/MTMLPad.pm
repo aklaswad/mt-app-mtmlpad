@@ -166,7 +166,7 @@ sub set_entry_params {
 
     if ( ( my $parent_id = $entry->parent_id ) && !$_fork) {
         my $parent = MT->model('entry')->load($parent_id);
-        $param->{parent} = [ $app->set_entry_params($parent, undef, 1) ];
+        $param->{entry_parent} = [ $app->set_entry_params($parent, undef, 1) ];
     }
     $param;
 }

@@ -124,7 +124,7 @@ $('#delete').click( function () {
 
       <div class="entry-summary-header">
         <mt:var name="entry_title_html">
-        <mt:loop name="parent">
+        <mt:loop name="entry_parent">
           Forked from
           <a href="/<mt:var name="entry_id">">
             <mt:if name="entry_title"><mt:var name="entry_title"><mt:else>entry:<mt:var name="entry_id"></mt:if>
