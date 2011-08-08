@@ -1,25 +1,29 @@
 <mt:include name="header.tmpl" component="MTMLPad">
 
 <div id="content">
-
   <div id="about" style="background: url(<mt:var name="static_uri">plugins/MTMLPad/images/lego.png) no-repeat;" />
     <mt:blogDescription>
   </div>
 
-  <div id="recent-posts" class="entry-list">
-    <mt:include name="list_posts.tmpl" component="MTMLPad" />
+  <div class="content-left size3of5">
+    <div id="recent-posts" class="entry-list">
+      <h2>Recent Posts</h2>
+      <mt:include name="list_posts.tmpl" component="MTMLPad" />
+    </div>
   </div>
-
-  <div id="news">
-    <h2>News</h2>
-    <mt:entries blog_ids="6">
-        <div class="asset">
-          <h3 class="asset-header"><mt:entryTitle></h3>
-          <div class="news asset-body">
-              <mt:entryBody>
+  <div class="content-right size2of5">
+    <div id="news">
+      <h2>News</h2>
+      <mt:ignore> FIXME: blog_id 6 is a magic number!!!</mt:ignore>
+      <mt:entries blog_ids="6">
+          <div class="asset">
+            <h3 class="asset-header"><mt:entryTitle></h3>
+            <div class="news asset-body">
+                <mt:entryBody>
+            </div>
           </div>
-        </div>
-    </mt:entries>
+      </mt:entries>
+    </div>
   </div>
 </div>
 

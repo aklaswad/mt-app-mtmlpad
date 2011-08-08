@@ -122,7 +122,7 @@ $('#delete').click( function () {
   <div id="content" class="editor-view-content">
     <form action="<mt:var name="config.MTMLPadURL">" method="POST">
 
-      <div class="entry-summary-header">
+      <div class="entry-summary-header content-wide">
         <mt:var name="entry_title_html">
         <mt:loop name="entry_parent">
           Forked from
@@ -144,17 +144,19 @@ $('#delete').click( function () {
         <span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
   </mt:if>
       </div>
-      <div id="editor-area">
+
+      <div id="editor-area" class="content-left size1of2">
         <textarea
             name="editor"
             id="editor"
             <mt:unless name="entry_editable">readonly="readonly"</mt:unless>
         ><mt:if name="entry_text_raw"><mt:var name="entry_text_raw" encode_html="1"></mt:if></textarea>
       </div>
-      <div id="preview-area">
+      <div id="preview-area" class="content-right size1of2">
         <pre id="preview"></pre>
+        <div id="preview-state" style="display: none"></div>
       </div>
-      <div id="actions">
+      <div id="editor-actions" class="content-wide">
           <input type="hidden" name="__mode" value="save" />
     <mt:if name="entry_id">
           <input type="hidden" name="id" value="<mt:var name="entry_id">" />
@@ -168,6 +170,7 @@ $('#delete').click( function () {
           </mt:if>
         </mt:if>
       </div>
+
 <mt:ignore>
 <mt:loop name="entry_tags">
 <mt:var name="__value__">
@@ -176,7 +179,7 @@ $('#delete').click( function () {
     </form>
 
 <mt:if name="entry_id">
-    <div id="comments">
+    <div id="comments" class="content-wide">
       <h2>Comments</h2>
       <mt:loop name="comments">
       <div class="entry-summary">
@@ -198,7 +201,5 @@ $('#delete').click( function () {
 </mt:if>
 
   </div>
-
-  <div id="preview-state" style="display: none"></div>
 
 <mt:include name="footer.tmpl" component="MTMLPad">

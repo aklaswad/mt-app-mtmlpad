@@ -1,4 +1,4 @@
-/* Init */
+/* Initialize */
 body,div,pre,p,blockquote,
 form,fieldset,input,textarea,select,option,
 dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,
@@ -8,38 +8,42 @@ table,th,td,embed,object {
     vertical-align: baseline;
 }
 
+
+/* Basic Elements */
+body {
+    color: #666;
+    font-size: 13px;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    background-color: #f1f1f1; /* same to footer */
+}
+
 ul li {
     list-style: none;
 }
 
-a, a:hover, a:visited {
-    color: #02e;
+a, a:visited {
+    color: #04a;
     text-decoration: none;
 }
 
-body {
-    font-size: 13px;
+a:hover {
+    color: #08a;
+    text-decoration: none;
 }
 
-/* Editor */
-textarea#text, div.CodeMirror {
-    width: 480px;
-    border: 1px solid #ddd;
-    background-color: #FFF;
-    overflow: auto;
+h1 {
+    font-size: 36px;
 }
 
-pre.CodeMirror,
-CodeMirror pre {
-    overflow: hidden;
+h2 {
+    font-size: 22px;
 }
 
-pre.snipet {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 3px;
-    line-height: 1.2em;
+h3 {
+    font-size: 16px;
 }
+
+/* CodeMirror's MTML Mode */
 
 .CodeMirror .cm-mt-comment {
     color: #abc;
@@ -57,47 +61,199 @@ pre.snipet {
     color: #825;
 }
 
-.entry-summary .CodeMirror-scroll {
-    height: 50px;
-    overflow: hidden;
-}
+/* Global layout */
 
-/* misc */
 #header {
-    color: #fff;
+    width: 960px;
     height: 30px;
-    background-color: #080808;
-    border-bottom: 2px solid #888;
-
-    z-index: 100;
-    padding: 0 0 0 10px;
-    background: -webkit-gradient(linear, left top, left bottom, from(#555), to(#111));
-    background: -moz-linear-gradient(top, #555 0%, #111 100%);
-
+    margin: 0 auto;
+    position: relative;
 }
 
 #header a {
+    display: inline-block;
+    height: 20px;
+    padding: 5px 7px;
+}
+
+#header #logo-box {
+    width: auto;
+    float: left;
+}
+
+#header #user-box {
+    width: auto;
+    float: right;
+}
+
+#user-box #open-usermenu-panel {
+    background-size: 19px 19px;
+    padding-left: 22px;
+}
+
+#header #user-box .dropdown {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    min-width: 250px;
+}
+
+#content {
+    width: 960px;
+    min-height: 500px;
+    margin: 0 auto;
+    overflow: auto;
+    background-color: #fff;
+}
+
+.content-wide {
+    clear: both;
+    width: 100%;
+    width: 944px;  /* 960 * (3/5) - margin + padding */
+    margin: 4px;
+    padding: 4px;
+}
+
+.size1of2 {
+    width: 464px;  /* 960 * (2/5) - margin + padding */
+    margin: 4px;
+    padding: 4px;
+}
+
+.size2of5 {
+    width: 368px;  /* 960 * (2/5) - margin + padding */
+    margin: 4px;
+    padding: 4px;
+}
+
+.size3of5 {
+    width: 560px;  /* 960 * (3/5) - margin + padding */
+    margin: 4px;
+    padding: 4px;
+}
+
+.content-left { float: left }
+.content-right { float: right }
+
+#footer {
+    height: 200px;
+}
+
+/* Global Design */
+
+#header-wrapper {
+    background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#333));
+    background: -moz-linear-gradient(top, #888 0%, #333 100%);
+}
+
+#header {
     color: #fff;
-    text-decoration: none;
+    z-index: 100;
+}
+
+#header a {
+    color: #ccc;
 }
 
 #header a:hover {
-    color: #abc;
-#    text-decoration: underline;
+    color: #fff;
 }
 
-#logo {
-    font-size: 1.2em;
-    font-weight: bold;
+#user-box .dropdown {
+    background-color: #444;
+    border: 1px solid #aaa;
 }
+
+#header #user-box .dropdown a {
+    display: block;
+    padding: 10px;
+}
+
+.dropdown a:hover {
+    background-color: #333;
+}
+
+#footer {
+    padding: 20px 0 5px 0;
+    text-align: center;
+    font-size: 0.7em;
+    color: #abc;
+    background-color: #f1f1f1;
+    clear: both;
+}
+
+/* Entry List */
+
+div.entry-summary {
+    margin: 0.8em 0 2.5em 0;
+    padding: 0.2em 0.5em;
+    background-color: #f8f4f6;
+}
+
+.entry-summary-header {
+    padding: 3px;
+    height: 24px;
+    overflow: auto;
+    vertical-align: middle;
+}
+
+.entry-summary-title {
+    font-size: 1.6em;
+}
+
+.entry-summary .CodeMirror {
+    position: relative;
+    background-color: #fff;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ddd;
+    height: auto;
+    margin: 4px 0;
+}
+
+.author-summary {
+    float: right;
+    display: inline-block;
+}
+
+.author-summary a,
+.author-summary img {
+    vertical-align: top;
+}
+
+.entry-summary textarea.snipet {
+    width: 100%;
+}
+
+.entry-summary-more-info {
+    text-align: right;
+    font-size: 0.7em;
+}
+
+/* User icons */
+
+.icon-small {
+    width: 22px;
+    height: 22px;
+    padding: 1px;
+    border: 1px solid #ddd;
+}
+
+.icon-minimal {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #ddd;
+}
+
+/* Buttons */
 
 .button {
     cursor: pointer;
     overflow: visible;
     display: inline-block;
     outline: none;
-    margin-right: 5px;
-    padding: 3px 0.5em;
+    height: 22px;
+    padding: 2px 6px;
     border: 1px solid #c0c6c9;
     line-height: 1.2;
     background-color: #f3f3f3;
@@ -105,10 +261,8 @@ pre.snipet {
     background: -moz-linear-gradient(top, #f3f3f3 0%, #dcdddd 100%);
     color: #2b2b2b;
     font-size: 12px;
-    font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
     text-align: center;
     text-decoration: none;
-    vertical-align: middle;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -135,6 +289,8 @@ pre.snipet {
 
 .button#create-new {
     border: 1px solid #666;
+    height: 22px;
+    padding: 2px 6px;
     box-shadow: 0 1px 0 #444;
     background: -webkit-gradient(linear, left top, left bottom, from(#e62), to(#d51));
     background: -moz-linear-gradient(top, #e62 0%, #d51 100%);
@@ -155,70 +311,6 @@ pre.snipet {
     background: -moz-linear-gradient(top, #d51 0%, #c40 100%);
 }
 
-#user-box {
-    position: absolute;
-    right: 40px;
-    top: 0px;
-    width: 400px;
-    height: 30px;
-    text-align: right;
-}
-
-#header, #header a, #header img {
-    vertical-align: middle;
-}
-
-#signin-panel {
-    color: #000;
-    background-color: #f0f4f8;
-    padding: 0;
-    width: 250px;
-    position: absolute;
-    right: 0;
-    top: 30px;
-    border: 1px solid #aaa;
-}
-
-#usermenu-panel {
-    background-color: #f0f4f8;
-    padding: 0;
-    width: 120px;
-    position: absolute;
-    right: 0;
-    top: 30px;
-    border: 1px solid #aaa;
-}
-
-#signin-panel a,
-#usermenu-panel a {
-    color: #000;
-}
-
-.dropdown li a {
-    color: #000;
-    display: block;
-    padding: 2px 8px 0 0;
-    border: 1px solid #fff;
-    border-left: 1px solid #eee;
-}
-
-.dropdown li.field-wrapper {
-    padding: 2px 8px 0 0;
-}
-
-.dropdown li a:hover {
-    background-color: #fff;
-    text-decoration: none;
-
-}
-
-#signin_with_openid input {
-    width: 120px;
-    padding: 1px 2px 1px 22px;
-    background-repeat: no-repeat;
-    background-position: 3px center;
-}
-
 a.load-more-posts {
     width: 100%;
     color: #777;
@@ -228,113 +320,73 @@ a.load-more-posts {
     margin-bottom: 20px;
 }
 
-a.load-more-posts:hover {
-    width: 100%;
-    color: #444;
-    margin-bottom: 20px;
+/* View Screen */
+
+#editor-wrapper {
+    height: auto;
+    position: relative;
 }
 
-#content {
-    min-width: 800px;
-    max-width: 80%;
-    min-height: 500px;
-    margin: 0 auto;
-    overflow: auto;
-    padding: 32px 10px 20px 10px;
+div.entry-summary-header {
+    height: auto;
+    margin-bottom: 10px;
+}
+
+#title {
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 26px;
+}
+
+.editor-view-content .CodeMirror {
+    position: relative;
     background-color: #fff;
-    border: 1px solid #ddd;
+    border-width: 1px 1px 0 1px;
+    border-style: solid;
+    border-color: #888;
+    height: auto;
+    min-height: 300px;
 }
 
-body {
-    background-color: #f1f1f1; /* same to footer */
+.editor-view-content .CodeMirror-scroll {
+    height: auto;
+    min-height: 300px;
+    overflow: auto;
 }
 
-#footer {
-    margin: 0 auto;
-    padding: 20px 0 5px 0;
-    width: 100%;
-    text-align: center;
-    font-size: 0.7em;
-    color: #abc;
-    background-color: #f1f1f1;
-    clear: both;
-}
-
-#footer a {
-    color: #abc;
-    text-decoration: none;
-}
-
-#footer a:hover {
-    color: #abc;
-    text-decoration: underline;
-}
-
-#editor-area, #preview-area {
-    float: left;
-    width: 500px;
+#preview-area {
+    position: relative;
+    overflow: hidden;
 }
 
 #preview {
-    width: 500px;
+    position: relative;
+    background-color: #fff;
+    height: auto;
     min-height: 300px;
+    border-width: 1px 1px 0 1px;
+    border-style: solid;
+    border-color: #888;
     padding: 5px 0;
     line-height: 1em;
     overflow: auto;
 }
 
-#actions {
-    clear: both;
+#preview-state {
+    color: #fff;
+    position: fixed;
+    height: 150px;
     width: 100%;
-    padding: 20px;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    padding: 16px;
 }
 
-.icon-small {
-    width: 22px;
-    height: 22px;
-    padding: 1px;
-    border: 1px solid #ddd;
-}
-
-.icon-minimal {
-    width: 14px;
-    height: 14px;
-    border: 1px solid #ddd;
-}
-
-.entry-summary {
-    margin-bottom: 2.5em;
-    position: relative;
-}
-
-.entry-summary-header {
-    padding: 3px;
-    height: 24px;
-    vertical-align: middle;
-}
-
-.entry-summary-title {
-    font-size: 1.1em;
-}
-
-.author-summary {
-    float: right;
-    vertical-align: top;
-}
-
-.author-summary a,
-.author-summary img {
-    vertical-align: top;
-}
-
-.entry-summary textarea.snipet {
+#comments textarea {
     width: 100%;
-}
-
-.entry-summary .CodeMirror {
-    width: 100%;
-    position: relative;
-    left: -1px;
+    min-height: 120px;
 }
 
 /* Index screen */
@@ -348,140 +400,5 @@ body {
     font-weight: bold;
     border-radius: 10px;
     background-color: #f0f6f3;
-}
-
-#about li {
-    font-size: 0.6em;
-}
-
-#recent-posts {
-    width: 600px;
-    float: left;
-}
-
-#news {
-    margin: 0 10px;
-    width: 400px;
-    float: left;
-}
-
-/* Editor screen */
-
-.editor-view-content .CodeMirror-scroll {
-    height: auto;
-    overflow: visible;
-    min-height: 300px;
-}
-
-#content.editor-view-content {
-    height: auto;
-    overflow: hidden;
-    padding-top: 80px;
-}
-
-
-#editor-area {
-    position: relative;
-    width: 50%;
-    float: left;
-}
-
-#preview-area {
-    position: relative;
-    width: 50%;
-    float: left;
-}
-
-#preview-state {
-    position: fixed;
-    top: 30px;
-    height: 30px;
-    background-color: rgba(255,0,0,0.75);
-    color: #fff;
-    width: 100%;
-    text-align: center;
-}
-
-#preview.error {
-    background-color: #ddd;
-}
-
-.editor-view-content input#title {
-    font-size: 24px;
-    height: 30px;
-    width: 450px;
-}
-
-.editor-view-content .entry-summary-header {
-    height: 33px;
-}
-
-.editor-view-content .entry-summary-header h1 {
-    display: inline;
-}
-
-#comments {
-    width: 500px;
-    margin: 20px;
-}
-
-#comments textarea {
-    width: 500px;
-    height: 120px;
-}
-
-#save-comment {
-    font-size: 14px;
-    width: 120px;
-    float: right;
-}
-
-/* Author screen */
-div#author-info {
-    width: 100%;
-    height: 120px;
-    padding: 10px 0;
-}
-
-div#author-userpic {
-    height: 100px;
-    float: left;
-    padding: 10px;
-}
-
-img.userpic-large {
-    float: left;
-}
-
-.author-view-content .entry-summary {
-    /* width: 500px; */
-}
-
-/* Topics */
-
-.asset {
-    width: 100%;
-    margin: 0 0 1.1em 0;
-    background-color: #fff;
-}
-
-.asset-header {
-    padding: 2px 5px;
-    border-bottom: 1px solid #abc;
-}
-
-.asset-body {
-    padding: 5px;
-}
-
-/* Unused, but will use in future, maybe... */
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.4);
-    z-index: 50;
 }
 

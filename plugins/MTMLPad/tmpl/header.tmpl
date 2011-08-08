@@ -14,28 +14,34 @@
 
 </head>
 <body>
-  <div id="header">
-    <a id="logo" href="<mt:var name="config.MTMLPadURL">">MTMLPad</a>
-
-    <div id="user-box">
-      <mt:if name="user">
-            <a id="create-new" class="button" href="<mt:var name="config.MTMLPadURL">new/">Create New</a>
-            <mt:if name="user_userpic">
-              <img class="icon-small" src="<mt:var name="user_userpic" escape="html">" />
-            <mt:else>
-              <img class="userpic icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg" />
-            </mt:if>
-
-            <a href="#" id="open-usermenu-panel"><mt:var name="user_name" escape="html"></a>
-            <div id="usermenu-panel" class="dropdown" style="display: none;">
-              <ul>
-                <li><a href="<mt:var name="config.MTMLPadURL">author/<mt:var name="user_id">">My Profile</a></li>
-                <li><a href="<mt:var name="config.MTMLPadURL">?__mode=handle_sign_in&amp;logout=1">Sign out</a></li>
-              </ul>
-            </div>
-      <mt:else>
-        <a href="#" id="open-login-panel">Sign in</a>
-        <mt:include name="login.tmpl" component="MTMLPad">
-      </mt:if>
+  <div id="header-wrapper">
+    <div id="header">
+      <div id="logo-box">
+          <a id="logo" href="<mt:var name="config.MTMLPadURL">">MTMLPad</a>
+      </div>
+  
+      <div id="user-box">
+        <mt:if name="user">
+          <a id="create-new" class="button" href="<mt:var name="config.MTMLPadURL">new/">Create New</a>
+          <a
+            href="#"
+            id="open-usermenu-panel"
+          <mt:if name="user_userpic">
+            style="background: url(<mt:var name="user_userpic" escape="html">) no-repeat left center;"
+          <mt:else>
+            style="background: url(<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg) no-repeat left center;"
+          </mt:if>
+          ><mt:var name="user_name" escape="html"></a>
+          <div id="usermenu-panel" class="dropdown" style="display: none;">
+            <ul>
+              <li><a href="<mt:var name="config.MTMLPadURL">author/<mt:var name="user_id">">My Profile</a></li>
+              <li><a href="<mt:var name="config.MTMLPadURL">?__mode=handle_sign_in&amp;logout=1">Sign out</a></li>
+            </ul>
+          </div>
+        <mt:else>
+            <a href="#" id="open-login-panel">Sign in</a>
+            <mt:include name="login.tmpl" component="MTMLPad">
+        </mt:if>
+      </div>
     </div>
   </div>
