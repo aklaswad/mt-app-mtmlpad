@@ -1,29 +1,11 @@
-<div id="signin-panel" class="dropdown" style="display: none;">
 
-<ul>
+<ul class="dropdown-menu">
     <li><a href="<mt:var name="script_url">login?client=twitter&redirect=<mt:var name="this_url" encode_url="1">"><img src="<mt:var name="static_uri">plugins/MTMLPad/images/twitter.png" width="16" height="16" /> Sign in with Twitter account</a></li>
 
     <li><a href="<mt:var name="script_url">login?client=facebook&redirect=<mt:var name="this_url" encode_url="1">"><img src="<mt:var name="static_uri">plugins/MTMLPad/images/facebook.png" width="16" height="16" /> Sign in with Facebook account</a></li>
 
     <li><a href="<mt:var name="script_url">login?client=google&redirect=<mt:var name="this_url" encode_url="1">">Sign in with Google account</a></li>
 
-  <li id="signin_with_openid" class="field-wrapper">
-    <form method="post" action="/">
-      <input type="hidden" name="__mode" value="login_external" />
-      <input type="hidden" name="blog_id" value="2" />
-      <input type="hidden" name="entry_id" value="" />
-      <input type="hidden" name="static" value="/" />
-      <input type="hidden" name="key" value="OpenID" /> 
-      <input type="text" name="openid_url" id="openid_url" class="text full" placeholder="Your OpenID URL" style="background-image: url(http://localhost:5001/mt-static/images/comment/openid_logo.png);" />
-      <button
-        type="submit"
-        accesskey="s"
-        title="Sign In (s)"
-        class="sign-in action primary button">
-        Open ID
-      </button>
-    </form>
-  </li>
 
 </ul>
 </div>

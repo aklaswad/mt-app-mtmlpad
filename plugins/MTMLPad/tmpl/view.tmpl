@@ -96,6 +96,29 @@ $('#delete').click( function () {
     return false;
 });
 
+
+$(window).scroll( function () {
+  if ( $(this).scrollTop() < $('#preview').offset().top ) {
+    $('#preview-state')
+      .removeClass('preview-state-middle')
+      .removeClass('preview-state-bottom')
+      .addClass('preview-state-top');
+  }
+  else if ( $(this).scrollTop() + 60 > $('#preview').offset().top + $('#preview').outerHeight() - $('#preview-state').outerHeight() ) {
+    $('#preview-state')
+      .removeClass('preview-state-top')
+      .removeClass('preview-state-middle')
+      .addClass('preview-state-bottom');
+  }
+  else {
+    $('#preview-state')
+      .removeClass('preview-state-top')
+      .removeClass('preview-state-bottom')
+      .addClass('preview-state-middle');
+  }
+});
+
+
 });
 
 </mt:setVarBlock>
@@ -119,58 +142,62 @@ $('#delete').click( function () {
 </mt:setVarBlock>
 
 <mt:include name="header.tmpl" component="MTMLPad">
-  <div id="content" class="editor-view-content">
+  <div id="content" class="editor-view-content container">
     <form action="<mt:var name="config.MTMLPadURL">" method="POST">
-
-      <div class="entry-summary-header content-wide">
-        <mt:var name="entry_title_html">
-        <mt:loop name="entry_parent">
-          Forked from
-          <a href="/<mt:var name="entry_id">">
-            <mt:if name="entry_title"><mt:var name="entry_title"><mt:else>entry:<mt:var name="entry_id"></mt:if>
-          </a>
-          by
-          <a href="/author/<mt:var name="author_id">">
-            <mt:var name="author_name">
-            <mt:if name="author_userpic">
-              <img class="userpic icon-minimal" src="<mt:var name="author_userpic" escape="html">" />
-            <mt:else>
-              <img class="userpic icon-minimal" src="<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg" />
-            </mt:if>
-          </a>
-        </mt:loop>
-
-  <mt:if name="entry_id">
-        <span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
-  </mt:if>
-      </div>
-
-      <div id="editor-area" class="content-left size1of2">
-        <textarea
-            name="editor"
-            id="editor"
-            <mt:unless name="entry_editable">readonly="readonly"</mt:unless>
-        ><mt:if name="entry_text_raw"><mt:var name="entry_text_raw" encode_html="1"></mt:if></textarea>
-      </div>
-      <div id="preview-area" class="content-right size1of2">
-        <pre id="preview"></pre>
-        <div id="preview-state" style="display: none"></div>
-      </div>
-      <div id="editor-actions" class="content-wide">
-          <input type="hidden" name="__mode" value="save" />
+      <div class="row">
+        <div class="entry-summary-header content-wide span16">
+          <mt:var name="entry_title_html">
+          <mt:loop name="entry_parent">
+            Forked from
+            <a href="/<mt:var name="entry_id">">
+              <mt:if name="entry_title"><mt:var name="entry_title"><mt:else>entry:<mt:var name="entry_id"></mt:if>
+            </a>
+            by
+            <a href="/author/<mt:var name="author_id">">
+              <mt:var name="author_name">
+              <mt:if name="author_userpic">
+                <img class="userpic icon-minimal" src="<mt:var name="author_userpic" escape="html">" />
+              <mt:else>
+                <img class="userpic icon-minimal" src="<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg" />
+              </mt:if>
+            </a>
+          </mt:loop>
+  
     <mt:if name="entry_id">
-          <input type="hidden" name="id" value="<mt:var name="entry_id">" />
+          <span class="author-summary">by <mt:include name="author_info.tmpl" component="MTMLPad"></span>
     </mt:if>
-          <input type="hidden" name="text" id="text" />
-          <input type="hidden" name="summary" id="summary" />
-        <mt:if name="user_id">
-          <button class="button" id="save"><mt:if name="entry_id"><mt:if name="entry_is_mine">Update<mt:else>Fork and save</mt:if><mt:else>Save</mt:if></button>
-          <mt:if name="entry_is_mine">
-            <a class="button" id="delete" href="/delete/<mt:var name="entry_id">">Delete</a>
-          </mt:if>
-        </mt:if>
+        </div>
+      </div>
+      <div class="row" id="editor-wrapper">
+        <div id="editor-area" class="content-left span8">
+          <textarea
+              name="editor"
+              id="editor"
+              <mt:unless name="entry_editable">readonly="readonly"</mt:unless>
+          ><mt:if name="entry_text_raw"><mt:var name="entry_text_raw" encode_html="1"></mt:if></textarea>
+        </div>
+        <div id="preview-area" class="content-right span8">
+          <pre id="preview"></pre>
+          <div id="preview-state" style="display: none"></div>
+        </div>
       </div>
 
+      <div class="row">
+        <div id="editor-actions" class="span16">
+            <input type="hidden" name="__mode" value="save" />
+      <mt:if name="entry_id">
+            <input type="hidden" name="id" value="<mt:var name="entry_id">" />
+      </mt:if>
+            <input type="hidden" name="text" id="text" />
+            <input type="hidden" name="summary" id="summary" />
+          <mt:if name="user_id">
+            <button class="btn primary" id="save"><mt:if name="entry_id"><mt:if name="entry_is_mine">Update<mt:else>Fork and save</mt:if><mt:else>Save</mt:if></button>
+            <mt:if name="entry_is_mine">
+              <a class="btn danger" id="delete" href="/delete/<mt:var name="entry_id">">Delete</a>
+            </mt:if>
+          </mt:if>
+        </div>
+      </div>
 <mt:ignore>
 <mt:loop name="entry_tags">
 <mt:var name="__value__">
@@ -178,8 +205,9 @@ $('#delete').click( function () {
 </mt:ignore>
     </form>
 
+    <div class="row">
 <mt:if name="entry_id">
-    <div id="comments" class="content-wide">
+    <div id="comments" class="content-wide span16">
       <h2>Comments</h2>
       <mt:loop name="comments">
       <div class="entry-summary">
@@ -194,12 +222,13 @@ $('#delete').click( function () {
         <input type="hidden" name="__mode" value="save_comment" />
         <input type="hidden" name="entry_id" value="<mt:var name="entry_id">" />
         <textarea name="comment_text"></textarea>
-        <input class="button" id="save-comment" type="submit" value="comment" />
+        <input class="btn primary" id="save-comment" type="submit" value="comment" />
       </form>
       </mt:if>
     </div>
 </mt:if>
 
-  </div>
+      </div>
 
 <mt:include name="footer.tmpl" component="MTMLPad">
+  </div>

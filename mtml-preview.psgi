@@ -33,7 +33,7 @@ sub build_error {
     my ($error) = @_;
     my $res = Plack::Response->new(400);
     $res->header( 'Content-Type' => 'text/plain' );
-    $res->header( 'Access-Control-Allow-Origin' => 'http://localhost:5001' );
+    $res->header( 'Access-Control-Allow-Origin' => MT->config->MTMLPadURL );
     $res->content( Encode::encode_utf8($error) );
     return $res->finalize;
 }

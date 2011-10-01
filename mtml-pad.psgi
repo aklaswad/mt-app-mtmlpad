@@ -26,7 +26,14 @@ my $mt_app = sub {
 
     $app->init_request(CGIObject => $cgi);
     $app->{cookies} = do { $cgi->cookie; $cgi->{'.cookies'} }; # wtf
-    $app->run;
+    eval {
+        $app->run;
+    };
+
+    if ( $@ && $env->{'psgix.harakiri'} ) {
+        $env->{'psgix.harakiri.commit'} = 1;  ## Kill me
+        ## TBD: show fail whale here.
+    }
 
     # copied from MT::App::send_http_header
     my $type = $app->{response_content_type} || 'text/html';

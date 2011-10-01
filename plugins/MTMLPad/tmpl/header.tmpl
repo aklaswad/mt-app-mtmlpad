@@ -10,38 +10,56 @@
 <mt:var name="page_script">
 </script>
 <link rel="stylesheet" href="<mt:var name="static_uri">plugins/MTMLPad/CodeMirror2/lib/codemirror.css" />
-<link rel="stylesheet" href="<mt:var name="static_uri">plugins/MTMLPad/css/styles.css" />
+<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
+<link rel="stylesheet" href="<mt:var name="static_uri">plugins/MTMLPad/css/styles.css">
+
+<script type="text/javascript" src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-dropdown.js"></script>
+
+
+<script>
+  $( function (){
+    $('div.topbar').dropdown();
+  });
+</script>
 
 </head>
 <body>
-  <div id="header-wrapper">
-    <div id="header">
-      <div id="logo-box">
-          <a id="logo" href="<mt:var name="config.MTMLPadURL">">MTMLPad</a>
-      </div>
-  
-      <div id="user-box">
-        <mt:if name="user">
-          <a id="create-new" class="button" href="<mt:var name="config.MTMLPadURL">new/">Create New</a>
-          <a
-            href="#"
-            id="open-usermenu-panel"
-          <mt:if name="user_userpic">
-            style="background: url(<mt:var name="user_userpic" escape="html">) no-repeat left center;"
-          <mt:else>
-            style="background: url(<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg) no-repeat left center;"
-          </mt:if>
-          ><mt:var name="user_name" escape="html"></a>
-          <div id="usermenu-panel" class="dropdown" style="display: none;">
-            <ul>
+  <div class="topbar">
+    <div class="fill">
+      <div class="container">
+
+        <a class="brand" id="logo" href="<mt:var name="config.MTMLPadURL">">MTMLPad(alpha)</a>
+
+        <ul class="nav secondary-nav">
+          <mt:if name="user">
+            <li><a id="create-new" href="<mt:var name="config.MTMLPadURL">new/">Create New</a></li>
+            <li>
+            </li>
+            <li class="dropdown">
+              <a
+                class="dropdown-toggle"
+                href="#"
+                id="open-usermenu-panel">
+              <mt:if name="user_userpic">
+                <img class="userpic" width="14" height="14" src="<mt:var name="user_userpic" escape="html">" />
+              <mt:else>
+                <img class="userpic" width="14" height="14" src="<mt:var name="static_uri">plugins/MTMLPad/images/default-userpic-50.jpg" />
+              </mt:if>
+
+
+                <mt:var name="user_name" escape="html">
+              </a>
+            <ul class="dropdown-menu">
               <li><a href="<mt:var name="config.MTMLPadURL">author/<mt:var name="user_id">">My Profile</a></li>
               <li><a href="<mt:var name="config.MTMLPadURL">?__mode=handle_sign_in&amp;logout=1">Sign out</a></li>
             </ul>
-          </div>
-        <mt:else>
-            <a href="#" id="open-login-panel">Sign in</a>
-            <mt:include name="login.tmpl" component="MTMLPad">
-        </mt:if>
+          </li>
+          <mt:else>
+            <li class="dropdown">
+              <a class="dropdown-toggle" href="#" id="open-login-panel">Sign in</a>
+            <mt:include name="login.tmpl" component="MTMLPad"></li>
+          </mt:if>
+        </ul>
       </div>
     </div>
   </div>

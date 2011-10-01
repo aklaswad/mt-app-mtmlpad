@@ -1,4 +1,6 @@
 $(function () {
+
+/*  REPLACED BY BOOTSTRAP
     $('#open-login-panel').click( function () {
         var $panel = $('#signin-panel');
         var disp   = $panel.css('display');
@@ -15,10 +17,13 @@ $(function () {
           $('#signin-panel').hide();
         }
     });
+*/
 
     $('#openid_url').click( function () {
         return false;
     });
+
+/*  REPLACED BY BOOTSTRAP
 
     $('#open-usermenu-panel').click( function () {
         $('#usermenu-panel').show();
@@ -28,7 +33,7 @@ $(function () {
         });
         return false;
     });
-
+*/
     $('a.load-more-posts').live('click', function () {
       var $button = $(this);
       var url = $button.attr('data-next-url');

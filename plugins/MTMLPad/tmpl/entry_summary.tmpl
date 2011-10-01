@@ -36,7 +36,7 @@
 <mt:if name="more_info">
   <ul class="entry-summary-more-info">
   <mt:loop name="entry_parent">
-    <li>
+    <li class="label">
       Forked from
       <a href="/<mt:var name="entry_id">">
         <mt:if name="entry_title"><mt:var name="entry_title"><mt:else>entry:<mt:var name="entry_id"></mt:if>
@@ -60,7 +60,7 @@
 </mt:loop>
 </mt:ignore>
   <mt:if name="entry_comment_count">
-    <li><mt:var name="entry_comment_count"> comments</li>
+    <li class="label"><mt:var name="entry_comment_count"> comments</li>
   </mt:if>
 
 </mt:if>

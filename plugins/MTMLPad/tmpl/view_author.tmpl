@@ -1,29 +1,31 @@
 <mt:setvarblock name="page_title"><mt:var name="author_name" escape="html"> | <mt:var name="application_name"></mt:setvarblock>
 <mt:include name="header.tmpl" component="MTMLPad">
 
-<div id="content" class="author-view-content">
-  <div id="content-left" class="size2of5">
-    <div id="author-info">
-      <div id="author-userpic">
-        <img class="userpic-large" src="<mt:var name="author_userpic" escape="html">"/>
+<div id="content" class="author-view-content container">
+  <div class="row">
+    <div id="content-left" class="span8">
+      <div id="author-info">
+        <div id="author-userpic">
+          <img class="userpic-large" src="<mt:var name="author_userpic" escape="html">"/>
+        </div>
+        <h1>
+          <mt:var name="author_name" escape="html">
+    <mt:ignore>
+          <mt:if name="author_external_profile_url">
+            <a href="<mt:var name="author_external_profile_url" escape="html">"><img class="auth-icon icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/<mt:var name="author_auth_type">.png" /></a>
+          </mt:if>
+    </mt:ignore>
+        </h1>
+        <ul class="author-description">
+          <li>posted <mt:var name="author_post_count"> entries</li>
+        </ul>
       </div>
-      <h1>
-        <mt:var name="author_name" escape="html">
-  <mt:ignore>
-        <mt:if name="author_external_profile_url">
-          <a href="<mt:var name="author_external_profile_url" escape="html">"><img class="auth-icon icon-small" src="<mt:var name="static_uri">plugins/MTMLPad/images/<mt:var name="author_auth_type">.png" /></a>
-        </mt:if>
-  </mt:ignore>
-      </h1>
-      <ul class="author-description">
-        <li>posted <mt:var name="author_post_count"> entries</li>
-      </ul>
+    </div>
+    <div id="content-right" class="span8">
+      <div id="recent-posts" class="entry-list">
+        <mt:include name="list_posts.tmpl" component="MTMLPad" />
+      </div>
     </div>
   </div>
-  <div id="content-right" class="size3of5">
-    <div id="recent-posts" class="entry-list">
-      <mt:include name="list_posts.tmpl" component="MTMLPad" />
-    </div>
-  </div>
+  <mt:include name="footer.tmpl" component="MTMLPad">
 </div>
-<mt:include name="footer.tmpl" component="MTMLPad">
